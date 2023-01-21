@@ -1,0 +1,224 @@
+body {
+    background: #f0f2f8
+}
+.container, .row {
+    height: 100%;
+    min-height: 100%;
+}
+html, body {
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+}
+.headingbg {
+    background: #3f2c90;
+    border-radius: 15px;
+}
+.formbg {
+    background: #fff;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(235, 235, 235, 1);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(235, 235, 235, 1);
+    box-shadow: 0px 0px 20px 0px rgba(235, 235, 235, 1);
+}
+.borderradius {
+    border-radius: 15px;
+}
+.searchform .form-control {
+    border-color: #dfdfe7 !important;
+    color: #3f2c90 !important;
+    font-size: 18px;
+}
+.searchform label {
+    color: #8e98aa
+}
+.searchform h4, .searchform h3, .searchform h5 {
+    color: #37373b;
+    font-weight: 550
+}
+.searchform p {
+    color: #b2b8ba
+}
+.colorgrey {
+    color: #b2b8ba
+}
+#searchdiv {
+    background: #3f2c90;
+    border-radius: 15px;
+}
+.btn-success {
+    background: #21d59e;
+    border-color: #21d59e
+}
+.btn-success:hover, .btn-success:focus, .btn-success:active {
+    background: #21d59e !important;
+    border-color: #21d59e !important;
+}
+.bottomlinks a {
+    color: #838f92
+}
+.detailstabs li {
+    width: 50%
+}
+.detailstable tr td, .detailstable tr th {
+    padding: 5px;
+    font-size: 12px;
+}
+.text-success {
+    color: #21d59e !important
+}
+.borderdotted {
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+}
+.upiid .form-control {
+    border: 1px solid #ebeff6 !important;
+    font-size: 14px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.orclass {
+    font-size: 14px;
+    background: #fff !important;
+    position: absolute;
+    top: -7px;
+    line-height: 14px;
+    left: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+@media screen and (max-width: 768px) {
+.collapsed {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.mobilenone {
+    display: none
+}
+h1 {
+    font-size: 30px;
+}
+.font12 {
+    font-size: 12px;
+}
+.mobileshow {
+    display: inherit
+}
+}
+
+@media screen and (min-width: 768px) {
+.mobileshow {
+    display: none
+}
+}
+.btn.focus, .btn:focus {
+    box-shadow: none
+}
+.font14 {
+    font-size: 14px;
+}
+.bggreen {
+    background: #e2fbda;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 12px;
+}
+.greentxt {
+    color: #61cf45
+}
+.font12 {
+    font-size: 14px;
+}
+.h2 {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ededed;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    font-size: 12px;
+}
+.h2 span {
+    background: #fff;
+    padding: 0 10px;
+}
+.boxshadow {
+    -webkit-box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.08);
+    -moz-box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.08);
+    box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.08);
+}
+#myDropdown, .dd-container {
+    width: 100%
+}
+.dd-select label {
+    line-height: 35px!important;
+    margin-bottom: 0px;
+    text-align: left;
+    color: #212529;
+    font-size: 14px;
+    font-weight: normal;
+}
+.dd-selected {
+    padding: 5px!important;
+    background: #fff;
+    border: solid 1px #f5f5f5;
+    border-radius: 5px!important;
+    text-align: left;
+}
+.dd-select {
+    border: 0px!important;
+    color: #131b6a!important;
+    text-align: left;
+}
+.dd-options {
+    width: 100%;
+    border: 0px!important;
+    padding: 0px!important;
+}
+.dd-option-text {
+    line-height: 25px!important;
+    margin-bottom: 0px
+}
+.dd-option-image, .dd-selected-image {
+    width: 35px!important;
+}
+.redbg {
+    background: #f8d7da;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 12px;
+}
+/* .livechat_button {
+    width: 100%;
+}
+.livechat_button a {
+    color: #fff;
+    display: block;
+} */
+.text-yellow {
+    color: #FFCC00;
+    font-weight: bolder;
+}
+.uploadfile input {
+    background: #efefef!important;
+    border-radius: 5px;
+}
+
+/* remove spin in number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

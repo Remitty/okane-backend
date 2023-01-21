@@ -1,0 +1,162 @@
+body {
+  background: #fafbfe
+}
+.form-control, .dataTable-input {
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  appearance: auto !important;
+  font-family: 'Lato', sans-serif;
+  color: #6c757d !important;
+}
+.sb-sidenav-dark {
+  background: #1e824c
+}
+.bgblue {
+  background: #1e824c
+}
+.btn-check:focus + .btn, .btn:focus {
+  box-shadow: none !important
+}
+.dashsearch input {
+  background: #f1f3fa;
+  border-color: #f1f3fa
+}
+.btn-success {
+  background: #15c055;
+  border-color: #15c055
+}
+.dashsearch .btn-dark {
+  color: #fff;
+  border-right: solid 1px #1e824c;
+  border-top: solid 1px #1e824c;
+  border-bottom: solid 1px #1e824c;
+  background: #1e824c;
+  border-left: solid 1px #1e824c;
+}
+.sb-topnav .navbar-brand {
+  background: #1e824c;
+  color:#dee2e6;
+  height: 60px;
+  line-height: 46px;
+}
+.sb-topnav {
+  height: 60px;
+}
+.boxshadow {
+  box-shadow: 0px 0px 35px 0px rgba(154, 161, 171, 0.15);
+}
+.admincard .card {
+  background: #fff;
+  border: 0px;
+}
+.admincard .card .card-header {
+  background: #fff;
+  border-bottom: solid 1px #edf2f9;
+}
+label {
+  color: #6c757d;
+  padding-bottom: 10px;
+}
+.forms input, .forms select {
+  border: solid 1px #dee2e6
+}
+.input-group-text {
+  padding: 0.59rem 0.75rem
+}
+.form-control:focus, .dataTable-input:focus { box-shadow:none; border-color:#f1f3fa; background: #f1f3fa}
+.topbar { color:#6c757d}
+.logout .dropdown-menu { padding: 0px;}
+.logout .dropdown-menu .dropdown-item { padding-top: 10px;padding-bottom: 10px;}
+.btn-primary, .btn-primary:hover, .btn-check:focus + .btn-primary, .btn-primary:focus { background: #1e824c; border-color: #1e824c}
+.btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle{ background: #1e824c; border-color: #1e824c}
+.dataTable-table tbody { border-top:solid 2px #e3eaef!important}
+.dataTable-table > tbody > tr > td { vertical-align: middle}
+.btn-outline-info, .btn-outline-info:hover {color: #1e824c;
+    border-color: #1e824c; background: none}
+
+/*------------------------------------------------SWITCHES-----------------------------------------------*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #04aa6d;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #04aa6d;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.btn-outline-primary, .btn-outline-primary:hover { border-color:#1e824c; color:#1e824c}
+.btn-outline-primary:hover, .btn-outline-primary:active { background: #1e824c; color:#fff;}
+
+
+.table > :not(:first-child), .dataTable-table > :not(:first-child) { border-top:solid 2px #dee2e6}
+
+.adminmodal .close { background: none; border:0px; font-size:20px; color:#fff;}
+.adminmodal .modal-header { border-bottom:0px;}
+.adminmodal .forninput { background: none; font-size:22px; font-weight: bold; border: none; text-align: right}
+.bg-blue { background: #1e824c}
+
+.swap input { background: none; font-size:22px; font-weight: bold; border: none; text-align: right}
+.swapget span{font-size: 22px; font-weight: bold; text-align: right; display: block; padding-right: 10px;}
+
+/* remove spin in number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
