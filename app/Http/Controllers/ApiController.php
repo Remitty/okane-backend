@@ -204,7 +204,7 @@ class ApiController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
 
-        return response()->json(['status' => true]);
+        return response()->json($user);
     }
 
 }
