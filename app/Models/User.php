@@ -18,10 +18,48 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
-        'password_crypt',
+        'first_name',
+        'last_name',
+        'mobile',
+        'country_code',
+        'dob',
+        'address',
+        'city',
+        'state',
+        'country',
+        'postal_code',
+        'tax_id',
+        'tax_id_type',
+        'funding_source',
+        'employment_status',
+        'employer_name',
+        'occupation', //employment_position
+        'public_shareholder', // is_control_person
+        'is_affiliated_exchange_or_finra',
+        'is_politically_exposed',
+        'is_immediate_family_exposed',
+        // if is_control_person or is_affiliated_exchange_or_finra
+        'shareholder_company_name',
+        'shareholder_company_address',
+        'shareholder_company_city',
+        'shareholder_company_state',
+        'shareholder_company_country',
+        'shareholder_company_email',
+        /////////
+        'account_id',
+        'account_number',
+        'account_type',
+        'account_currency',
+        'account_status',
+        'watchlist_id',
+        'active',
+        'verified',
+        'last_login',
+        'profile_completion',
+        'avatar',
+        'ip_address'
     ];
 
     /**
@@ -30,7 +68,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'remember_token',
+        'remember_token', 'password', 'updated_at'
     ];
 
     /**

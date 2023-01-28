@@ -57,8 +57,6 @@ class LoginAdminController extends Controller
             ]);
         }
 
-        Log::create(['content' => $request->email.' logged in']);
-
         return redirect('admin/index');
     }
 
