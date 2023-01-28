@@ -132,6 +132,10 @@ class ApiController extends Controller
          * @var \App\Models\User
          */
         $user = Auth::user();
+
+        if(isset($user->account_id))
+            return response()->json($user);
+
         $params = [
             "enabled_assets"=> ["us_equity"],
             'contact' => [
