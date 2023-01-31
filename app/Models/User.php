@@ -59,7 +59,8 @@ class User extends Authenticatable
         'last_login',
         'profile_completion',
         'avatar',
-        'ip_address'
+        'ip_address',
+        'bank_linked'
     ];
 
     /**
@@ -79,5 +80,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function name()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
 
 }

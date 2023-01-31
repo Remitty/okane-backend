@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Alpaca\Alpaca;
+use App\Libs\PlaidAPI;
 use App\Models\Country;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,15 +19,22 @@ class ApiController extends Controller
     protected $alpaca;
 
     /**
+     * @var \App\Libs\PlaidAPI
+     */
+    protected $plaid;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $key = "CKU51RZO0G4DV6EUAGOY";
-        $secret = "xLFOkBtp0sQUYLz2H5X6Nc1ZxOx8INkRO8OJugo7";
-        $this->alpaca = new Alpaca($key, $secret, true);
+        $key = config('alpaca.api_key');
+        $secret = config('alpaca.secret_key');
+        $mode = config('alpaca.mode');
+        $this->alpaca = new Alpaca($key, $secret, $mode == 'pepper' ? true: false);
+        $this->plaid = new PlaidAPI();
     }
 
     public function authenticate(Request $request)
@@ -57,7 +64,7 @@ class ApiController extends Controller
          * @var \App\Models\User
          */
         $user = Auth::user();
-        $user->update(['last_login' => Carbon::now()]);
+        $user->update(['last_login' => now()]);
 
         $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
         $data['user'] = $user;
@@ -101,7 +108,7 @@ class ApiController extends Controller
          * @var \App\Models\User
          */
         $user = Auth::user();
-        $user->update(['last_login' => Carbon::now()]);
+        $user->update(['last_login' => now()]);
 
         $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
         $data['user'] = $user;
@@ -209,6 +216,36 @@ class ApiController extends Controller
         }
 
         return response()->json($user);
+    }
+
+    public function createPlaidLinkToken()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+
+        try {
+            $token = $this->plaid->createLinkToken(strval($user->id));
+            $user->update(['plaid_token' => $token]);
+        } catch (\Throwable $th) {
+            // Log::info('user plaid token: '.$th->getMessage());
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+        return response()->json(['link_token' => $token]);
+    }
+
+    public function connectPlaid(Request $request)
+    {
+        try {
+            $processorToken = $this->plaid->connectPlaid($request->public_token, $request->account_id, 'alpaca');
+
+            $user = Auth::user();
+            $bank = $this->alpaca->funding->createAchRelationship($user->account_id, ['processor_token' => $processorToken]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+        return response()->json($bank);
     }
 
 }

@@ -57,6 +57,7 @@ return new class extends Migration
             $table->char('profile_completion', 50)->nullable();
             $table->char('avatar', 255)->nullable();
             $table->char('ip_address', 50)->nullable();
+            $table->boolean('bank_linked')->default(false);
             $table->timestamps();
         });
     }

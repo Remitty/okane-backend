@@ -22,4 +22,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);
     Route::get('/countries', [ApiController::class, 'countries']);
     Route::post('/onboard/complete', [ApiController::class, 'completeOnboard']);
+    Route::get('/plaid/create_link_token', [ApiController::class, 'createPlaidLinkToken']);
+    Route::post('/plaid/connect', [ApiController::class, 'connectPlaid']);
 });
