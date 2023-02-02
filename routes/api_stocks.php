@@ -35,4 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/fund', [ApiController::class, 'fund']);
     Route::post('/withdraw', [ApiController::class, 'withdraw']);
 
+    Route::get('watchlist', [ApiController::class, 'getWatchList']);
+    Route::post('watchlist', [ApiController::class, 'setWatchList']);
+
 });

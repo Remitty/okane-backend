@@ -314,5 +314,39 @@ class ApiController extends Controller
         }
     }
 
+    public function getWatchList()
+    {
+        try {
+            $user = Auth::user();
+            $list = $this->alpaca->trade->getWatchLists($user->account_id);
+            return response()->json($list);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function setWatchList(Request $request)
+    {
+        try {
+            /**
+             * @var \App\Models\User
+             */
+            $user = Auth::user();
+            $watchlistId = $user->watchlist_id;
+            if(!isset($watchlistId)) {
+                $params = [
+                    'name' => $user->email.' watchlist',
+                    'symbols' => [$request->symbol]
+                ];
+                $res = $this->alpaca->trade->createWatchlist($user->account_id, $params);
+                $user->update(['watchlist_id' => $res->id]);
+            } else {
+                $this->alpaca->trade->addAssetsToWatchlist($user->account_id, $watchlistId, [$request->symbol]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
 
 }
