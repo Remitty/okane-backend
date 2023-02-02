@@ -22,6 +22,17 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);
     Route::get('/countries', [ApiController::class, 'countries']);
     Route::post('/onboard/complete', [ApiController::class, 'completeOnboard']);
+
     Route::get('/plaid/create_link_token', [ApiController::class, 'createPlaidLinkToken']);
     Route::post('/plaid/connect', [ApiController::class, 'connectPlaid']);
+
+    Route::get('/assets/all', [ApiController::class, 'searchAssetsAll']);
+    Route::get('/asset/{symbol}', [ApiController::class, 'searchAsset']);
+
+    Route::post('/order/create', [ApiController::class, 'createOrder']);
+    Route::post('/order/cancel', [ApiController::class, 'cancelOrder']);
+
+    Route::post('/fund', [ApiController::class, 'fund']);
+    Route::post('/withdraw', [ApiController::class, 'withdraw']);
+
 });
