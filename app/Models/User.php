@@ -86,4 +86,9 @@ class User extends Authenticatable
         return $this->first_name.' '.$this->last_name;
     }
 
+    public function bank()
+    {
+        return $this->hasOne(Bank::class)->get();
+    }
+
 }
