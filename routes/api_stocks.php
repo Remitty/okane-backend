@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\StocksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,21 +21,22 @@ Route::post('/signup', [ApiController::class, 'register']);
 Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);
     Route::get('/countries', [ApiController::class, 'countries']);
-    Route::post('/onboard/complete', [ApiController::class, 'completeOnboard']);
 
-    Route::get('/plaid/create_link_token', [ApiController::class, 'createPlaidLinkToken']);
-    Route::post('/plaid/connect', [ApiController::class, 'connectPlaid']);
+    Route::post('/onboard/complete', [StocksController::class, 'createAccount']);
 
-    Route::get('/assets/all', [ApiController::class, 'searchAssetsAll']);
-    Route::get('/asset/{symbol}', [ApiController::class, 'searchAsset']);
+    Route::get('/plaid/create_link_token', [StocksController::class, 'createPlaidLinkToken']);
+    Route::post('/plaid/connect', [StocksController::class, 'connectPlaid']);
 
-    Route::post('/order/create', [ApiController::class, 'createOrder']);
-    Route::post('/order/cancel', [ApiController::class, 'cancelOrder']);
+    Route::get('/assets/all', [StocksController::class, 'searchAssetsAll']);
+    Route::get('/asset/{symbol}', [StocksController::class, 'searchAsset']);
 
-    Route::post('/fund', [ApiController::class, 'fund']);
-    Route::post('/withdraw', [ApiController::class, 'withdraw']);
+    Route::post('/order/create', [StocksController::class, 'createOrder']);
+    Route::post('/order/cancel', [StocksController::class, 'cancelOrder']);
 
-    Route::get('watchlist', [ApiController::class, 'getWatchList']);
-    Route::post('watchlist', [ApiController::class, 'setWatchList']);
+    Route::post('/fund', [StocksController::class, 'fund']);
+    Route::post('/withdraw', [StocksController::class, 'withdraw']);
+
+    Route::get('watchlist', [StocksController::class, 'getWatchList']);
+    Route::post('watchlist', [StocksController::class, 'setWatchList']);
 
 });
