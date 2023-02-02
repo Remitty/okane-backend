@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Alpaca\Alpaca;
-use App\Libs\PlaidAPI;
-use App\Models\Bank;
 use App\Models\Country;
 use App\Models\User;
-use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Alpaca\Alpaca;
 use App\Libs\PlaidAPI;
 use App\Models\Bank;
-use App\Models\Country;
-use App\Models\User;
 use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -244,6 +242,17 @@ class StocksController extends Controller
             } else {
                 $this->alpaca->trade->addAssetsToWatchlist($user->account_id, $watchlistId, [$request->symbol]);
             }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function getTradingAccount()
+    {
+        try {
+            $user = Auth::user();
+            $account = $this->alpaca->account->getTradingAccount($user->account_id);
+            return response()->json($account);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

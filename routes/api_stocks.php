@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('/onboard/complete', [StocksController::class, 'createAccount']);
 
+    Route::get('account/trading-profile', [StocksController::class, 'getTradingAccount']);
+
     Route::get('/plaid/create_link_token', [StocksController::class, 'createPlaidLinkToken']);
     Route::post('/plaid/connect', [StocksController::class, 'connectPlaid']);
 
