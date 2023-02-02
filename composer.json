@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "remitty/stockstradeapi",
     "type": "project",
     "description": "It's a Laravel backend for trading stocks with Alpaca and Plaid API",
     "keywords": ["framework", "laravel", "alpaca", "plaid", "stocks"],

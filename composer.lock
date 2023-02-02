@@ -212,12 +212,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitdevstar/alpaca-broker-php-sdk.git",
-                "reference": "b9bdb7a9c475e338ea451547fc930521a7d92b30"
+                "reference": "ed75412c90e1bf34a9ebe7eabecb35aab468c7a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitdevstar/alpaca-broker-php-sdk/zipball/b9bdb7a9c475e338ea451547fc930521a7d92b30",
-                "reference": "b9bdb7a9c475e338ea451547fc930521a7d92b30",
+                "url": "https://api.github.com/repos/gitdevstar/alpaca-broker-php-sdk/zipball/ed75412c90e1bf34a9ebe7eabecb35aab468c7a0",
+                "reference": "ed75412c90e1bf34a9ebe7eabecb35aab468c7a0",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "issues": "https://github.com/gitdevstar/alpaca-broker-php-sdk/issues",
                 "source": "https://github.com/gitdevstar/alpaca-broker-php-sdk/tree/main"
             },
-            "time": "2023-01-31T00:51:01+00:00"
+            "time": "2023-01-31T10:32:37+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
