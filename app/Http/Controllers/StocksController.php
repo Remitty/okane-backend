@@ -272,4 +272,15 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function getPositions()
+    {
+        try {
+            $user = Auth::user();
+            $positions = $this->alpaca->trade->getAllPositions($user->account_id);
+            return response()->json($positions);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }
