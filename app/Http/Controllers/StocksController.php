@@ -257,4 +257,19 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function getPortfolioHistory(Request $request)
+    {
+        try {
+            $params = [
+                'period' => $request->period,
+                'timeframe' => $request->timeframe,
+            ];
+            $user = Auth::user();
+            $portfolio = $this->alpaca->trade->getPortfolioHistories($user->account_id, $params);
+            return response()->json($portfolio);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }
