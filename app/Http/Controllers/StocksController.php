@@ -110,20 +110,14 @@ class StocksController extends Controller
         return response()->json($bank);
     }
 
-    public function searchAssetsAll()
+    public function searchAssets(Request $request)
     {
         try {
-            $data = $this->alpaca->asset->getAssetsAll(['status' => 'active', 'asset_class' => 'us_equity']);
-            return response()->json($data);
-        } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-        }
-    }
-
-    public function searchAsset($symbol)
-    {
-        try {
-            $data = $this->alpaca->asset->getAssetBySymbol($symbol);
+            if($request->has('q')) {
+                $data = $this->alpaca->asset->getAssetBySymbol($request->q);
+            } else {
+                $data = $this->alpaca->asset->getAssetsAll(['status' => 'active']);
+            }
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
