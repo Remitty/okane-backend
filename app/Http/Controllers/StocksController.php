@@ -241,6 +241,16 @@ class StocksController extends Controller
         }
     }
 
+    public function removeAssetFromWatchList($symbol)
+    {
+        try {
+            $user = Auth::user();
+            $this->alpaca->trade->removeSymbolFromWatchlist($user->account_id, $user->watchlist_id, $symbol);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
     public function getTradingAccount()
     {
         try {

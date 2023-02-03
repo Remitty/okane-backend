@@ -41,5 +41,6 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('watchlist', [StocksController::class, 'getWatchList']);
     Route::post('watchlist', [StocksController::class, 'setWatchList']);
+    Route::delete('watchlist/{symbol}', [StocksController::class, 'removeAssetFromWatchList']);
 
 });
