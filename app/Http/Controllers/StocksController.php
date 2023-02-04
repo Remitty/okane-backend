@@ -310,7 +310,7 @@ class StocksController extends Controller
     {
         try {
             $quote = $this->fmp->get_quote($symbol);
-            return response()->json($quote);
+            return response()->json($quote[0]);
 
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
