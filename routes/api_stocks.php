@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('account/trading-profile', [StocksController::class, 'getTradingAccount']);
     Route::get('account/portfolio/history', [StocksController::class, 'getPortfolioHistory']);
     Route::get('positions', [StocksController::class, 'getPositions']);
+    Route::get('position/{symbol}', [StocksController::class, 'getPosition']);
+    Route::get('quote/{symbol}', [StocksController::class, 'getQuote']);
 
     Route::get('/plaid/create_link_token', [StocksController::class, 'createPlaidLinkToken']);
     Route::post('/plaid/connect', [StocksController::class, 'connectPlaid']);

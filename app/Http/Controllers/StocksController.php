@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Alpaca\Alpaca;
 use App\Libs\PlaidAPI;
+use App\Libs\FmpAPI;
 use App\Models\Bank;
 use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class StocksController extends Controller
 {
@@ -20,6 +22,10 @@ class StocksController extends Controller
      * @var \App\Libs\PlaidAPI
      */
     protected $plaid;
+    /**
+     * @var \App\Libs\FmpAPI
+     */
+    protected $fmp;
 
     /**
      * Create a new controller instance.
@@ -33,6 +39,7 @@ class StocksController extends Controller
         $mode = config('alpaca.mode');
         $this->alpaca = new Alpaca($key, $secret, $mode == 'pepper' ? true: false);
         $this->plaid = new PlaidAPI();
+        $this->fmp = new FmpAPI(config('fmp.api_key'));
     }
 
     /**
@@ -113,11 +120,9 @@ class StocksController extends Controller
     public function searchAssets(Request $request)
     {
         try {
-            if($request->has('q')) {
-                $data = $this->alpaca->asset->getAssetBySymbol($request->q);
-            } else {
-                $data = $this->alpaca->asset->getAssetsAll(['status' => 'active']);
-            }
+            $query = $request->q ?? '';
+            $limit = $request->q ? 5 : 20;
+            $data = $this->fmp->get_search($query, $limit);
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
@@ -283,6 +288,30 @@ class StocksController extends Controller
             $user = Auth::user();
             $positions = $this->alpaca->trade->getAllPositions($user->account_id);
             return response()->json($positions);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function getPosition($symbol)
+    {
+        try {
+            $user = Auth::user();
+            $position = $this->alpaca->trade->getOpenPosition($user->account_id, $symbol);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+
+        return response()->json($position);
+    }
+
+    public function getQuote($symbol)
+    {
+        try {
+            $quote = $this->fmp->get_quote($symbol);
+            return response()->json($quote);
+
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
