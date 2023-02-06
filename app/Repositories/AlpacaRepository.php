@@ -47,6 +47,11 @@ class AlpacaRepository
                 'agreement' => 'customer_agreement',
                 'signed_at' => today(),
                 'ip_address' => $user->ip_address ?? ''
+            ],
+            [
+                'agreement' => 'crypto_agreement',
+                'signed_at' => today(),
+                'ip_address' => $user->ip_address ?? ''
             ]]
         ];
         if($user->public_shareholder || $user->is_affiliated_exchange_or_finra) {
