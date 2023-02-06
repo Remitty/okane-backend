@@ -137,8 +137,6 @@ class StocksController extends Controller
             return response()->json(['error' => 'The amount field is required.'], 500);
         if(!$request->has('side'))
             return response()->json(['error' => 'The side field is required.'], 500);
-        if(!$request->has('asset_class'))
-            return response()->json(['error' => 'The asset_class field is required.'], 500);
         if(!in_array($request->side, ['buy', 'sell']))
             return response()->json(['error' => 'The side field is required in buy or sell.'], 500);
 
@@ -149,7 +147,7 @@ class StocksController extends Controller
             'side' => $request->side, // buy or sell
             'type' => 'market',
             'time_in_force' => 'day',
-            'subtag' => $request->asset_class // es_equity / crypto
+            'subtag' => $request->tag ?? 'es_equity' // es_equity / crypto
         ];
         try {
             $this->alpaca->trade->createOrder($user->account_id, $params);
