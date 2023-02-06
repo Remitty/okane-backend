@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Exception;
+
 class AlpacaRepository
 {
     /**
@@ -96,18 +98,22 @@ class AlpacaRepository
         ];
 
         $bank = $user->bank();
-        if($bank->type == 'ach') {
-            $params = [
-                'transfer_type' => 'ach',
-                'relationship_id' => $bank->relation_id,
-            ];
-        } else { // wire
-            $params = [
-                'transfer_type' => 'wire',
-                'bank_id' => $bank->relation_id,
-            ];
-        }
+        if(isset($bank)) {
+            if($bank->type == 'ach') {
+                $params = [
+                    'transfer_type' => 'ach',
+                    'relationship_id' => $bank->relation_id,
+                ];
+            } else { // wire
+                $params = [
+                    'transfer_type' => 'wire',
+                    'bank_id' => $bank->relation_id,
+                ];
+            }
 
-        return $params;
+            return $params;
+        } else {
+            throw new Exception("You have no connected bank. Please connect your bank.");
+        }
     }
 }
