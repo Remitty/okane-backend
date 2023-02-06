@@ -92,10 +92,6 @@ class AlpacaRepository
      */
     public function paramsForTransfer($user, $amount, $direction)
     {
-        $params = [
-            'amount' => $amount,
-            'direction' => $direction
-        ];
 
         $bank = $user->bank();
         if(isset($bank)) {
@@ -110,6 +106,9 @@ class AlpacaRepository
                     'bank_id' => $bank->relation_id,
                 ];
             }
+
+            $params['amount'] = $amount;
+            $params['direction'] = $direction;
 
             return $params;
         } else {
