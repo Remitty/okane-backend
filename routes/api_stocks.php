@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/plaid/create_link_token', [StocksController::class, 'createPlaidLinkToken']);
     Route::post('/plaid/connect', [StocksController::class, 'connectPlaid']);
 
-    Route::get('/assets', [StocksController::class, 'searchAssets']);
+    Route::get('/assets/{class}', [StocksController::class, 'searchAssets']);
 
     Route::post('/order/create', [StocksController::class, 'createOrder']);
     Route::post('/order/cancel', [StocksController::class, 'cancelOrder']);

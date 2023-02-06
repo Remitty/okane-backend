@@ -117,12 +117,13 @@ class StocksController extends Controller
         return response()->json($bank);
     }
 
-    public function searchAssets(Request $request)
+    public function searchAssets(Request $request, $class)
     {
         try {
             $query = $request->q ?? '';
             $limit = $request->q ? 5 : 20;
-            $data = $this->fmp->get_search($query, $limit);
+            $exchange = $class == 'stocks' ? 'NASDAQ' : 'crypto';
+            $data = $this->fmp->get_search($query, $limit, $exchange);
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
@@ -231,7 +232,7 @@ class StocksController extends Controller
             $watchlistId = $user->watchlist_id;
             if(!isset($watchlistId)) {
                 $params = [
-                    'name' => $user->email.' watchlist',
+                    // 'name' => $user->email.' watchlist',
                     'symbols' => [$request->symbol]
                 ];
                 $res = $this->alpaca->trade->createWatchlist($user->account_id, $params);
@@ -285,6 +286,12 @@ class StocksController extends Controller
         try {
             $user = Auth::user();
             $positions = $this->alpaca->trade->getAllPositions($user->account_id);
+            $symbols = implode(',' , array_column($positions, 'symbol'));
+            $quotes = $this->fmp->get_quote($symbols);
+            foreach ($positions as $index => $position) {
+                $idx = array_search($position['symbol'], array_column($quotes, 'symbol'));
+                $positions[$index]['name'] = $quotes[$idx]->name;
+            }
             return response()->json($positions);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
