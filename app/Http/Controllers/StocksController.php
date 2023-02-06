@@ -314,4 +314,16 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function getAchRelationships(Request $request)
+    {
+        $accountId = $request->account_id;
+
+        try {
+            $res = $this->alpaca->funding->getAchRelationships($accountId);
+            return response()->json($res);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }

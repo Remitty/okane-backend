@@ -46,3 +46,5 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('watchlist/{symbol}', [StocksController::class, 'removeAssetFromWatchList']);
 
 });
+
+Route::get('ach_relationships', [StocksController::class, 'getAchRelationships']);
