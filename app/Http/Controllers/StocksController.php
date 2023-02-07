@@ -151,9 +151,9 @@ class StocksController extends Controller
             'subtag' => $request->tag ?? 'es_equity' // es_equity / crypto
         ];
         try {
-            $this->alpaca->trade->createOrder($user->account_id, $params);
+            $order = $this->alpaca->trade->createOrder($user->account_id, $params);
 
-            return response()->json(['status' => true]);
+            return response()->json($order);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
