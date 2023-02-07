@@ -333,6 +333,19 @@ class StocksController extends Controller
         }
     }
 
+    public function getActivities()
+    {
+        try {
+            $user = Auth::user();
+            $params['account_id'] = $user->account_id;
+            $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
+            return response()->json($activities);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
     public function getAchRelationships(Request $request)
     {
         $accountId = $request->account_id;

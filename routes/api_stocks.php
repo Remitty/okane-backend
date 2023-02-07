@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('account/trading-profile', [StocksController::class, 'getTradingAccount']);
     Route::get('account/portfolio/history', [StocksController::class, 'getPortfolioHistory']);
     Route::get('positions', [StocksController::class, 'getPositions']);
+    Route::get('activities', [StocksController::class, 'getActivities']);
     Route::get('position/{symbol}', [StocksController::class, 'getPosition']);
     Route::get('quote/{symbol}', [StocksController::class, 'getQuote']);
 
