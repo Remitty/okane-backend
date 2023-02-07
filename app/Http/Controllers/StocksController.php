@@ -185,8 +185,8 @@ class StocksController extends Controller
             $user = Auth::user();
             $params = $alpacaRepo->paramsForTransfer($user, $request->amount, 'INCOMING');
 
-            $this->alpaca->funding->createTransferEntity($user->account_id, $params);
-            return response()->json(['status' => true]);
+            $payment = $this->alpaca->funding->createTransferEntity($user->account_id, $params);
+            return response()->json($payment);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
