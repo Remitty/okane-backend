@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('/fund', [StocksController::class, 'fund']);
     Route::post('/withdraw', [StocksController::class, 'withdraw']);
+    Route::get('/transfer', [StocksController::class, 'getTransferHistory']);
 
     Route::get('watchlist', [StocksController::class, 'getWatchList']);
     Route::post('watchlist', [StocksController::class, 'setWatchList']);
