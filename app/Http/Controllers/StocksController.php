@@ -225,8 +225,12 @@ class StocksController extends Controller
     {
         try {
             $user = Auth::user();
-            $list = $this->alpaca->trade->getWatchLists($user->account_id);
-            return response()->json($list);
+            $watchlist = $this->alpaca->trade->getWatchlistById($user->account_id, $user->watchlist_id);
+            $assets = $watchlist['assets'];
+            $symbols = implode(',' , array_column($assets, 'symbol'));
+            $quotes = $this->fmp->get_quote($symbols);
+            $watchlist['assets'] = $quotes;
+            return response()->json($watchlist);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
@@ -242,11 +246,11 @@ class StocksController extends Controller
             $watchlistId = $user->watchlist_id;
             if(!isset($watchlistId)) {
                 $params = [
-                    // 'name' => $user->email.' watchlist',
+                    'name' => $user->email.' watchlist',
                     'symbols' => [$request->symbol]
                 ];
                 $res = $this->alpaca->trade->createWatchlist($user->account_id, $params);
-                $user->update(['watchlist_id' => $res->id]);
+                $user->update(['watchlist_id' => $res['id']]);
             } else {
                 $this->alpaca->trade->addAssetsToWatchlist($user->account_id, $watchlistId, [$request->symbol]);
             }
