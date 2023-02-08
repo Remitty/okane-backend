@@ -229,7 +229,11 @@ class StocksController extends Controller
             $assets = $watchlist['assets'];
             $symbols = implode(',' , array_column($assets, 'symbol'));
             $quotes = $this->fmp->get_quote($symbols);
-            $watchlist['assets'] = $quotes;
+            foreach ($assets as $index => $asset) {
+                $idx = array_search($asset['symbol'], array_column($quotes, 'symbol'));
+                $assets[$index]['quote'] = $quotes[$idx];
+            }
+            $watchlist['assets'] = $assets;
             return response()->json($watchlist);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
