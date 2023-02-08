@@ -334,8 +334,17 @@ class StocksController extends Controller
     public function getQuote($symbol)
     {
         try {
-            $quote = $this->fmp->get_quote($symbol);
-            return response()->json($quote[0]);
+            $user = Auth::user();
+            $quotes = $this->fmp->get_quote($symbol);
+            $quote = $quotes[0];
+            $quote->isFavourite = false;
+            $watchlist = $this->alpaca->trade->getWatchlistById($user->account_id, $user->watchlist_id);
+            $assets = $watchlist['assets'];
+            foreach($assets as $asset) {
+                if($asset['symbol'] == $quote->symbol)
+                    $quote->isFavourite = true;
+            }
+            return response()->json($quote);
 
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
