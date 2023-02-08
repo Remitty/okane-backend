@@ -269,7 +269,8 @@ class StocksController extends Controller
     {
         try {
             $user = Auth::user();
-            $this->alpaca->trade->removeSymbolFromWatchlist($user->account_id, $user->watchlist_id, $symbol);
+            $watchlist = $this->alpaca->trade->removeSymbolFromWatchlist($user->account_id, $user->watchlist_id, $symbol);
+            return response()->json($watchlist);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
