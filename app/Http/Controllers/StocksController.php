@@ -159,15 +159,14 @@ class StocksController extends Controller
         }
     }
 
-    public function cancelOrder(Request $request)
+    public function cancelOrder($order_id)
     {
-        if(!$request->has('order_id'))
-            return response()->json(['error' => 'The order_id field is required.'], 500);
-
         $user = Auth::user();
         try {
-            $this->alpaca->trade->deleteOrder($user->account_id, $request->order_id);
-            return response()->json(['status' => true]);
+            $this->alpaca->trade->deleteOrder($user->account_id, $order_id);
+            $params['account_id'] = $user->account_id;
+            $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
+            return response()->json($activities);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
