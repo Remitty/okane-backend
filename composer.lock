@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47e4108f31cdd09d93206c3c4c3d40ec",
+    "content-hash": "bc8e15e6848b9013bc3908bc585459f1",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.258.5",
+            "version": "3.258.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c29a1db83373f8a5c4735acfdd3470e1bc594fee"
+                "reference": "09808d51cdb3cf01df1564dda4236da61ed9c804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c29a1db83373f8a5c4735acfdd3470e1bc594fee",
-                "reference": "c29a1db83373f8a5c4735acfdd3470e1bc594fee",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/09808d51cdb3cf01df1564dda4236da61ed9c804",
+                "reference": "09808d51cdb3cf01df1564dda4236da61ed9c804",
                 "shasum": ""
             },
             "require": {
@@ -146,9 +146,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.5"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.7"
             },
-            "time": "2023-02-07T19:22:14+00:00"
+            "time": "2023-02-09T19:23:14+00:00"
         },
         {
             "name": "brick/math",
@@ -211,12 +211,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitdevstar/alpaca-broker-php-sdk.git",
-                "reference": "71f6237996576dc715327a2e1b1b6d813a638424"
+                "reference": "89b99279d7073e042dbf6a0f8e3fca5f5110bd81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitdevstar/alpaca-broker-php-sdk/zipball/71f6237996576dc715327a2e1b1b6d813a638424",
-                "reference": "71f6237996576dc715327a2e1b1b6d813a638424",
+                "url": "https://api.github.com/repos/gitdevstar/alpaca-broker-php-sdk/zipball/89b99279d7073e042dbf6a0f8e3fca5f5110bd81",
+                "reference": "89b99279d7073e042dbf6a0f8e3fca5f5110bd81",
                 "shasum": ""
             },
             "require": {
@@ -253,9 +253,58 @@
             ],
             "support": {
                 "issues": "https://github.com/gitdevstar/alpaca-broker-php-sdk/issues",
-                "source": "https://github.com/gitdevstar/alpaca-broker-php-sdk/tree/main"
+                "source": "https://github.com/gitdevstar/alpaca-broker-php-sdk/tree/v1.0.0"
             },
-            "time": "2023-02-08T18:18:31+00:00"
+            "time": "2023-02-08T18:25:39+00:00"
+        },
+        {
+            "name": "devstar/alpaca-market-php-sdk",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gitdevstar/alpaca-market-php-sdk.git",
+                "reference": "0a406acce473bdd488337ad841f8e1e929c42b16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gitdevstar/alpaca-market-php-sdk/zipball/0a406acce473bdd488337ad841f8e1e929c42b16",
+                "reference": "0a406acce473bdd488337ad841f8e1e929c42b16",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.2",
+                "php": "^8.0.2"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "default-branch": true,
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Alpaca\\Market\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Devstar",
+                    "email": "loganph.work@gmail.com"
+                }
+            ],
+            "description": "PHP SDK for the Alpaca Market API",
+            "homepage": "https://github.com/gitdevstar/alpaca-market-php-sdk",
+            "keywords": [
+                "alpaca",
+                "api",
+                "stocks"
+            ],
+            "support": {
+                "issues": "https://github.com/gitdevstar/alpaca-market-php-sdk/issues",
+                "source": "https://github.com/gitdevstar/alpaca-market-php-sdk/tree/main"
+            },
+            "time": "2023-02-10T16:53:53+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8662,7 +8711,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "devstar/alpaca-broker-php-sdk": 20
+        "devstar/alpaca-broker-php-sdk": 20,
+        "devstar/alpaca-market-php-sdk": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

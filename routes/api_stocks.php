@@ -47,6 +47,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('watchlist', [StocksController::class, 'setWatchList']);
     Route::delete('watchlist/{symbol}', [StocksController::class, 'removeAssetFromWatchList']);
 
+    Route::get('market/stocks/{symbol}/bars', [StocksController::class, 'getMarketDataBars']);
+
 });
 
 Route::get('ach_relationships', [StocksController::class, 'getAchRelationships']);

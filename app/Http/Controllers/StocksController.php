@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Alpaca\Alpaca;
+use Alpaca\Market\Alpaca as AlpacaMarket;
 use App\Libs\PlaidAPI;
 use App\Libs\FmpAPI;
 use App\Models\Bank;
@@ -17,6 +18,10 @@ class StocksController extends Controller
      * @var \Alpaca\Alpaca
      */
     protected $alpaca;
+    /**
+     * @var \Alpaca\Market\Alpaca
+     */
+    protected $alpacaMarket;
 
     /**
      * @var \App\Libs\PlaidAPI
@@ -38,6 +43,7 @@ class StocksController extends Controller
         $secret = config('alpaca.secret_key');
         $mode = config('alpaca.mode');
         $this->alpaca = new Alpaca($key, $secret, $mode == 'pepper' ? true: false);
+        $this->alpacaMarket = new AlpacaMarket($key, $secret, $mode == 'pepper' ? true: false);
         $this->plaid = new PlaidAPI();
         $this->fmp = new FmpAPI(config('fmp.api_key'));
     }
@@ -359,6 +365,21 @@ class StocksController extends Controller
             $params['account_id'] = $user->account_id;
             $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
             return response()->json($activities);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function getMarketDataBars(Request $request, $symbol)
+    {
+        try {
+            $params = [
+                'timeframe' => $request->timeframe,
+                'start' => $request->start
+            ];
+            $data = $this->alpacaMarket->stocks->historicalBars($symbol, $params);
+            return response()->json($data);
 
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
