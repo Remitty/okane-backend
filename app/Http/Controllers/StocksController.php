@@ -147,6 +147,7 @@ class StocksController extends Controller
         if(!in_array($request->side, ['buy', 'sell']))
             return response()->json(['error' => 'The side field is required in buy or sell.'], 500);
 
+        $subtag = $request->tag ?? 'es_equity';
         $user = Auth::user();
         $params = [
             'symbol' => $request->symbol,
@@ -154,7 +155,8 @@ class StocksController extends Controller
             'side' => $request->side, // buy or sell
             'type' => 'market',
             'time_in_force' => 'day',
-            'subtag' => $request->tag ?? 'es_equity' // es_equity / crypto
+            'commission' => $subtag == 'es_equity' ? 0.5 : $request->amount * 0.01,
+            'subtag' =>  $subtag// es_equity / crypto
         ];
         try {
             $order = $this->alpaca->trade->createOrder($user->account_id, $params);
