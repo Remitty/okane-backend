@@ -7,6 +7,7 @@ use Alpaca\Market\Alpaca as AlpacaMarket;
 use App\Libs\PlaidAPI;
 use App\Libs\FmpAPI;
 use App\Models\Bank;
+use App\Models\User;
 use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -187,9 +188,11 @@ class StocksController extends Controller
     {
         if(!$request->has('amount'))
             return response()->json(['error' => 'The amount field is required.'], 500);
+        if(!$request->has('user_id'))
+            return response()->json(['error' => 'The amount field is required.'], 500);
 
         try {
-            $user = Auth::user();
+            $user = User::find($request->user_id);
             $params = $alpacaRepo->paramsForTransfer($user, $request->amount, 'INCOMING');
 
             $payment = $this->alpaca->funding->createTransferEntity($user->account_id, $params);

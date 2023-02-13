@@ -98,7 +98,7 @@ class AlpacaRepository
     public function paramsForTransfer($user, $amount, $direction)
     {
 
-        $bank = $user->bank();
+        $bank = $user->bank;
         if(isset($bank)) {
             if($bank->type == 'ach') {
                 $params = [
