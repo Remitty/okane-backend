@@ -51,6 +51,7 @@ class ApiController extends Controller
 
         $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
         $data['user'] = $user;
+        $data['user']['bank'] = $user->bank;
 
         return response()->json($data);
     }
