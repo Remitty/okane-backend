@@ -233,13 +233,17 @@ class StocksController extends Controller
     {
         try {
             $user = Auth::user();
-            $watchlist = $this->alpaca->trade->getWatchlistById($user->account_id, $user->watchlist_id);
-            $assets = $watchlist['assets'];
-            $symbols = implode(',' , array_column($assets, 'symbol'));
-            $quotes = $this->fmp->get_quote($symbols);
-            foreach ($assets as $index => $asset) {
-                $idx = array_search($asset['symbol'], array_column($quotes, 'symbol'));
-                $assets[$index]['quote'] = $quotes[$idx];
+            $assets = [];
+            if(isset($user->watchlist_id))
+            {
+                $watchlist = $this->alpaca->trade->getWatchlistById($user->account_id, $user->watchlist_id);
+                $assets = $watchlist['assets'];
+                $symbols = implode(',' , array_column($assets, 'symbol'));
+                $quotes = $this->fmp->get_quote($symbols);
+                foreach ($assets as $index => $asset) {
+                    $idx = array_search($asset['symbol'], array_column($quotes, 'symbol'));
+                    $assets[$index]['quote'] = $quotes[$idx];
+                }
             }
             $watchlist['assets'] = $assets;
             return response()->json($watchlist);
