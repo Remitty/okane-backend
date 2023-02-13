@@ -410,10 +410,10 @@ class StocksController extends Controller
         $relationId = $user->bank ? $user->bank->relation_id: $request->relation_id;
 
         try {
-            $res = $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
+            $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
             Bank::where('relation_id', $relationId)->delete();
             // $user->update(['bank_linked' => false]);
-            return response()->json($res);
+            return response()->json(['success' => true]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
