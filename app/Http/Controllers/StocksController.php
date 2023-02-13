@@ -388,12 +388,31 @@ class StocksController extends Controller
         }
     }
 
-    public function getAchRelationships(Request $request)
+    public function getAchRelationships()
     {
-        $accountId = $request->account_id;
+        $user = Auth::user();
+        $accountId = $user->account_id;
 
         try {
             $res = $this->alpaca->funding->getAchRelationships($accountId);
+            return response()->json($res);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function deleteAchRelationship(Request $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $accountId = $user->account_id;
+        $relationId = $user->bank ? $user->bank->relation_id: $request->relation_id;
+
+        try {
+            $res = $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
+            Bank::where('relation_id', $relationId)->delete();
+            // $user->update(['bank_linked' => false]);
             return response()->json($res);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
