@@ -88,7 +88,7 @@ class User extends Authenticatable
 
     public function bank()
     {
-        return $this->hasOne(Bank::class)->first();
+        return $this->hasOne(Bank::class);
     }
 
 }
