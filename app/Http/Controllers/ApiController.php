@@ -116,4 +116,18 @@ class ApiController extends Controller
         $data = Country::all();
         return response()->json($data);
     }
+
+    public function setDeviceToken(Request $request)
+    {
+        if(! $request->has('device_token')) {
+            return response()->json(['error' => 'The device_token is required.', 'code' => 0], 500);
+        }
+
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $user->update(['device_token' => $request->device_token]);
+        return response()->json(['success' => true]);
+    }
 }

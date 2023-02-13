@@ -60,7 +60,8 @@ class User extends Authenticatable
         'profile_completion',
         'avatar',
         'ip_address',
-        'bank_linked'
+        'bank_linked',
+        'device_token'
     ];
 
     /**
