@@ -108,12 +108,12 @@ class StocksController extends Controller
             Bank::create([
                 'user_id' => $user->id,
                 'type' => 'ach',
-                'relation_id' => $bank->id,
-                'routing_number' => $bank->bank_routing_number,
-                'account_number' => $bank->bank_account_number,
-                'owner_name' => $bank->account_owner_name,
-                'nickname' => $bank->nickname,
-                'status' => $bank->status
+                'relation_id' => $bank['id'],
+                'routing_number' => $bank['bank_routing_number'],
+                'account_number' => $bank['bank_account_number'],
+                'owner_name' => $bank['account_owner_name'],
+                'nickname' => $bank['nickname'],
+                'status' => $bank['status']
             ]);
 
             $user->update(['bank_linked' => true]);
