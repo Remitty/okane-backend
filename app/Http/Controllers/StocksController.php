@@ -404,19 +404,40 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    public function deleteBank(Request $request)
+    public function deleteBank()
     {
         /**
          * @var \App\Models\User
          */
         $user = Auth::user();
         $accountId = $user->account_id;
-        $relationId = $user->bank ? $user->bank->relation_id: $request->relation_id;
+        if(isset($user->bank)) {
+
+            $relationId = $user->bank->relation_id;
+
+            try {
+                $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
+                Bank::where('relation_id', $relationId)->delete();
+                // $user->update(['bank_linked' => false]);
+                return response()->json(['success' => true]);
+            } catch (\Throwable $th) {
+                return response()->json(['error' => $th->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['error' => "No connected bank."], 500);
+        }
+    }
+    public function deleteAchRelationship(Request $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $accountId = $user->account_id;
+        $relationId = $request->relation_id;
 
         try {
             $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
-            Bank::where('relation_id', $relationId)->delete();
-            // $user->update(['bank_linked' => false]);
             return response()->json(['success' => true]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
