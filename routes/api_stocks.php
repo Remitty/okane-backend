@@ -50,6 +50,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('market/stocks/{symbol}/bars', [StocksController::class, 'getMarketDataBars']);
 
     Route::get('ach_relationships', [StocksController::class, 'getAchRelationships']);
-    Route::delete('ach_relationship', [StocksController::class, 'deleteAchRelationship']);
+    Route::delete('bank', [StocksController::class, 'deleteBank']);
 });
 

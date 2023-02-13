@@ -404,7 +404,7 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    public function deleteAchRelationship(Request $request)
+    public function deleteBank(Request $request)
     {
         /**
          * @var \App\Models\User
