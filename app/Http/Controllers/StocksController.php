@@ -460,7 +460,7 @@ class StocksController extends Controller
                 try {
                     $user = User::where('account_id', $account['id'])->first();
                     $status = $account['status'];
-                    if($status != $user->account_status) {
+                    if(isset($user) && $status != $user->account_status) {
                         $message = $alpacaRepo->descriptionForAccountStatus($status);
                         (new Larafirebase)->withTitle('Account Status')
                             ->withBody($message)
