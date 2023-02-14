@@ -362,6 +362,8 @@ class StocksController extends Controller
                         $quote->isFavourite = true;
                 }
             }
+            $company = $this->fmp->get_company($symbol);
+            $quote->company = $company;
             return response()->json($quote);
 
         } catch (\Throwable $th) {
