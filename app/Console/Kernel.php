@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('6hourly:callbackcheck')->everySixHours()->runInBackground();
-        $schedule->command('3hourly:checkaccount')->everyMinute()->runInBackground();
+        $schedule->command('3hourly:checkaccount')->everyThreeHours()->runInBackground();
     }
 
     /**
