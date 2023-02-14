@@ -181,6 +181,17 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+    public function getOrders()
+    {
+        $user = Auth::user();
+        try {
+            $params['status'] = 'close';
+            $openOrders = $this->alpaca->trade->getAllOrders($user->account_id, $params);
+            return response()->json($openOrders);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 
     /**
      * @param \App\Repositories\AlpacaRepository
@@ -378,6 +389,12 @@ class StocksController extends Controller
             $user = Auth::user();
             $params['account_id'] = $user->account_id;
             $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
+            $openOrders = $this->alpaca->trade->getAllOrders($user->account_id);
+            foreach ($openOrders as $order) {
+                $order['transaction_time'] = $order['created_at'];
+                $order['order_status'] = $order['status'];
+                array_push($activities, $order);
+            }
             return response()->json($activities);
 
         } catch (\Throwable $th) {

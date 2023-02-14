@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('/order/create', [StocksController::class, 'createOrder']);
     Route::post('/order/{order_id}/cancel', [StocksController::class, 'cancelOrder']);
+    Route::get('orders', [StocksController::class, 'getOrders']);
 
     Route::post('/fund', [StocksController::class, 'fund']);
     Route::post('/withdraw', [StocksController::class, 'withdraw']);
