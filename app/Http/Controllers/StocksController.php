@@ -454,7 +454,7 @@ class StocksController extends Controller
     public function checkAccounts()
     {
         try {
-            $queuedUsers = User::whereNotIn('account_status', ['ACCOUNT_CLOSED', 'DISABLED', 'SUBMISSION_FAILED', 'ACTIVE', 'REJECTED', 'APPROVED'])->get()->toArray();
+            $queuedUsers = User::whereNotIn('account_status', ['ACCOUNT_CLOSED', 'DISABLED', 'SUBMISSION_FAILED', 'ACTIVE', 'REJECTED', 'APPROVED'])->get();
             foreach ($queuedUsers as $user) {
                 try {
                     $account = $this->alpaca->account->get($user->account_id);
