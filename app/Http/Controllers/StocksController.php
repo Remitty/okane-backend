@@ -451,24 +451,30 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    public function checkAccounts()
+    public function checkAccounts(AlpacaRepository $alpacaRepo)
     {
         try {
-            $queuedUsers = User::whereNotIn('account_status', ['ACCOUNT_CLOSED', 'DISABLED', 'SUBMISSION_FAILED', 'ACTIVE', 'REJECTED', 'APPROVED'])->get();
-            foreach ($queuedUsers as $user) {
+
+            $accounts = $this->alpaca->account->getAll();
+            foreach ($accounts as $account) {
                 try {
-                    $account = $this->alpaca->account->get($user->account_id);
-                    $res = (new Larafirebase)->withTitle('Wyretrade')
-                        ->withBody('Your account is ' . strtolower($account['status']))
-                        ->sendMessage($user->device_token);
-                    Log::info('FCM res => '.json_encode($res));
+                    $user = User::where('account_id', $account['id'])->first();
+                    $status = $account['status'];
+                    if($status != $user->account_status) {
+                        $message = $alpacaRepo->descriptionForAccountStatus($status);
+                        (new Larafirebase)->withTitle('Account Status')
+                            ->withBody($message)
+                            ->sendMessage($user->device_token);
+                        $user->update(['account_status' => $status]);
+                    }
+
                 } catch (\Throwable $th) {
                     Log::error('FCM error => '.$th->getMessage());
                 }
             }
-            return response()->json($queuedUsers);
+            // return response()->json($accounts);
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
+            // return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }

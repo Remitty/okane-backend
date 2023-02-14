@@ -120,4 +120,50 @@ class AlpacaRepository
             throw new Exception("You have no connected bank. Please connect your bank.");
         }
     }
+
+    public function descriptionForAccountStatus($status)
+    {
+        $description = '';
+        switch ($status) {
+            case 'INACTIVE':
+                $description = "Account not enabled to trade equities.";
+                break;
+            case 'ONBOARDING':
+                $description = "The account has been created but we haven’t performed KYC yet.";
+                break;
+            case 'SUBMITTED':
+                $description = "Application has been submitted and in process of review.";
+                break;
+            case 'ACTION_REQUIRED':
+                $description = "Application requires manual action.";
+                break;
+            case 'EDITED':
+                $description = "Application was edited.";
+                break;
+            case 'APPROVAL_PENDING':
+                $description = "Application approval process is in process.";
+                break;
+            case 'APPROVED':
+                $description = "Account application has been approved, waiting to be active.";
+                break;
+            case 'REJECTED':
+                $description = "Account application is rejected.";
+                break;
+            case 'ACTIVE':
+                $description = "Equities account is fully active and can start trading.";
+                break;
+            case 'DISABLED':
+                $description = "Account is disabled, comes after active.";
+                break;
+            case 'ACCOUNT_CLOSED':
+                $description = "Account is closed.";
+                break;
+
+            default:
+                $description = "Application has been submitted and in process of review.";
+                break;
+        }
+
+        return $description;
+    }
 }
