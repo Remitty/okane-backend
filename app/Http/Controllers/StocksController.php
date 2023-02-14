@@ -12,6 +12,7 @@ use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Kutia\Larafirebase\Services\Larafirebase;
 
 class StocksController extends Controller
 {
@@ -446,6 +447,26 @@ class StocksController extends Controller
         try {
             $this->alpaca->funding->deleteAchRelationship($accountId, $relationId);
             return response()->json(['success' => true]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function checkAccounts()
+    {
+        try {
+            $queuedUsers = User::whereNotIn('account_status', ['ACCOUNT_CLOSED', 'DISABLED', 'SUBMISSION_FAILED', 'ACTIVE', 'REJECTED', 'APPROVED'])->get()->toArray();
+            foreach ($queuedUsers as $user) {
+                try {
+                    $account = $this->alpaca->account->get($user->account_id);
+                    $res = (new Larafirebase)->withTitle('Wyretrade')
+                        ->withBody('Your account is ' . strtolower($account['status']))
+                        ->sendMessage($user->device_token);
+                    Log::info('FCM res => '.json_encode($res));
+                } catch (\Throwable $th) {
+                    Log::error('FCM error => '.$th->getMessage());
+                }
+            }
+            return response()->json($queuedUsers);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

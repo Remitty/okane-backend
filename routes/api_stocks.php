@@ -56,3 +56,4 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('device_token', [ApiController::class, 'setDeviceToken']);
 });
 
+Route::get('accounts', [StocksController::class, 'checkAccounts']);
