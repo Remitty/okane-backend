@@ -197,7 +197,7 @@ class StocksController extends Controller
     {
         $user = Auth::user();
         try {
-            $params['status'] = 'close';
+            $params['status'] = 'open';
             $openOrders = $this->alpaca->trade->getAllOrders($user->account_id, $params);
             return response()->json($openOrders);
         } catch (\Throwable $th) {
@@ -401,24 +401,8 @@ class StocksController extends Controller
             $user = Auth::user();
             $params['account_id'] = $user->account_id;
             $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
-            $openOrders = $this->alpaca->trade->getAllOrders($user->account_id);
-            $termsOrders = [];
-            foreach ($openOrders as $order) {
-                $qty = $order['qty'];
-                if(is_null($qty)) {
-                    $term = OpenOrder::where('order_id', $order['id'])->first();
-                    $qty = $term ? $term->qty : '0';
-                }
-                $activity['transaction_time'] = $order['created_at'];
-                $activity['order_status'] = $order['status'];
-                $activity['symbol'] = $order['symbol'];
-                $activity['side'] = $order['side'];
-                $activity['qty'] = $qty;
-                $activity['order_id'] = $order['id'];
-                array_push($termsOrders, $activity);
-            }
-            $mergedActivites = array_merge($termsOrders, $activities);
-            return response()->json($mergedActivites);
+
+            return response()->json($activities);
 
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
