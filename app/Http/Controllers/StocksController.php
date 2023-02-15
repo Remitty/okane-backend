@@ -7,6 +7,7 @@ use Alpaca\Market\Alpaca as AlpacaMarket;
 use App\Libs\PlaidAPI;
 use App\Libs\FmpAPI;
 use App\Models\Bank;
+use App\Models\OpenOrder;
 use App\Models\User;
 use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
@@ -162,7 +163,13 @@ class StocksController extends Controller
         ];
         try {
             $order = $this->alpaca->trade->createOrder($user->account_id, $params);
-
+            if(strtolower($order['status']) == 'accepted') {
+                OpenOrder::create([
+                    'user_id' => $user->id,
+                    'order_id' => $order['id'],
+                    'qty' => $request->qty ?? '0'
+                ]);
+            }
             return response()->json($order);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
@@ -390,12 +397,23 @@ class StocksController extends Controller
             $params['account_id'] = $user->account_id;
             $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
             $openOrders = $this->alpaca->trade->getAllOrders($user->account_id);
+            $termsOrders = [];
             foreach ($openOrders as $order) {
-                $order['transaction_time'] = $order['created_at'];
-                $order['order_status'] = $order['status'];
-                array_push($activities, $order);
+                $qty = $order['qty'];
+                if(is_null($qty)) {
+                    $term = OpenOrder::where('order_id', $order['id'])->first();
+                    $qty = $term ? $term->qty : '0';
+                }
+                $activity['transaction_time'] = $order['created_at'];
+                $activity['order_status'] = $order['status'];
+                $activity['symbol'] = $order['symbol'];
+                $activity['side'] = $order['side'];
+                $activity['qty'] = $qty;
+                $activity['order_id'] = $order['id'];
+                array_push($termsOrders, $activity);
             }
-            return response()->json($activities);
+            $mergedActivites = array_merge($termsOrders, $activities);
+            return response()->json($mergedActivites);
 
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
