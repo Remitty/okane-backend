@@ -61,7 +61,8 @@ class User extends Authenticatable
         'avatar',
         'ip_address',
         'bank_linked',
-        'device_token'
+        'device_token',
+        'doc'
     ];
 
     /**
@@ -90,6 +91,11 @@ class User extends Authenticatable
     public function bank()
     {
         return $this->hasOne(Bank::class);
+    }
+
+    public function document()
+    {
+        return $this->hasOne(Document::class);
     }
 
 }

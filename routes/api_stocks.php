@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);
     Route::get('/countries', [ApiController::class, 'countries']);
 
+    Route::post('/upload/document', [ApiController::class, 'uploadDocument']);
     Route::post('/onboard/complete', [StocksController::class, 'createAccount']);
 
     Route::get('account/trading-profile', [StocksController::class, 'getTradingAccount']);

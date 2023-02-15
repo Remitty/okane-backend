@@ -43,6 +43,14 @@ class AlpacaRepository
                 'family_name' => $user->last_name,
                 'email_address' => $user->email
             ],
+            'documents' => [
+                [
+                    "document_type"=> "identity_verification",
+                    // "document_sub_type"=> "passport",
+                    "content"=> base64_encode(file_get_contents(get_file_link($user->document->content))),
+                    "mime_type"=> "image/jpeg"
+                ]
+            ],
             'agreements' => [[
                 'agreement' => 'customer_agreement',
                 'signed_at' => today(),

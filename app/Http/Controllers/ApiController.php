@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,6 +110,26 @@ class ApiController extends Controller
         $user->update($request->all());
 
         return response()->json($user);
+    }
+
+    public function uploadDocument(Request $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        if($request->has('verify_doc')) {
+            $file = $request->file('verify_doc');
+            $verify_doc = $file->storeAs('documents', $user->id.'.'.$file->getClientOriginalExtension(), 'public');
+            // Document::updateOrCreate([
+            //     'user_id' => $user->id
+            // ], [
+            //     'content' => $verify_doc
+            // ]);
+            $user->update(['profile_completion' => 'document', 'doc' => get_file_link($verify_doc)]);
+        }
+
+        return response()->json(['success' =>true]);
     }
 
     public function countries()
