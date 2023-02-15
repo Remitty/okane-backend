@@ -14,4 +14,9 @@ class OpenOrder extends Model
         'order_id',
         'qty',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

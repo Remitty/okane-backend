@@ -181,6 +181,11 @@ class StocksController extends Controller
         $user = Auth::user();
         try {
             $this->alpaca->trade->deleteOrder($user->account_id, $order_id);
+            try {
+                OpenOrder::where('order_id', $order_id)->delete();
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
             $params['account_id'] = $user->account_id;
             $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
             return response()->json($activities);
@@ -510,6 +515,26 @@ class StocksController extends Controller
             // return response()->json($accounts);
         } catch (\Throwable $th) {
             // return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function checkOpenOrders()
+    {
+        $openOrders = OpenOrder::all();
+        foreach ($openOrders as $openOrder) {
+            try {
+
+                $user = $openOrder->user;
+                $order = $this->alpaca->trade->getOrder($user->account_id, $openOrder->order_id);
+                if($order['status'] !== 'accepted') {
+                    (new Larafirebase)->withTitle('Order Status')
+                            ->withBody($order['symbol']."'s order is " . $order['status'])
+                            ->sendMessage($user->device_token);
+                    $openOrder->delete();
+                }
+
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
     }
 }
