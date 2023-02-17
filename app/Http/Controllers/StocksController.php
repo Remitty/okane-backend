@@ -186,9 +186,9 @@ class StocksController extends Controller
             } catch (\Throwable $th) {
                 //throw $th;
             }
-            $params['account_id'] = $user->account_id;
-            $activities = $this->alpaca->account->getActivitiesByType('FILL',$params);
-            return response()->json($activities);
+            $params['status'] = 'open';
+            $openOrders = $this->alpaca->trade->getAllOrders($user->account_id, $params);
+            return response()->json($openOrders);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
