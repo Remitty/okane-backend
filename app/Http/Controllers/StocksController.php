@@ -61,9 +61,6 @@ class StocksController extends Controller
          */
         $user = Auth::user();
 
-        if(isset($user->account_id))
-            return response()->json($user);
-
         $params = $alpacaRepo->paramsForCreateAccount($user);
         try {
             if(isset($user->account_id))
