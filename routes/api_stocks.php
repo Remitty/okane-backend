@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('positions', [StocksController::class, 'getPositions']);
     Route::get('activities', [StocksController::class, 'getActivities']);
     Route::get('position/{symbol}', [StocksController::class, 'getPosition']);
-    Route::get('quote/{symbol}', [StocksController::class, 'getQuote']);
+    Route::get('quote', [StocksController::class, 'getQuote']);
 
     Route::get('/plaid/create_link_token', [StocksController::class, 'createPlaidLinkToken']);
     Route::post('/plaid/connect', [StocksController::class, 'connectPlaid']);

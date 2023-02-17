@@ -131,8 +131,14 @@ class StocksController extends Controller
         try {
             $query = $request->q ?? '';
             $limit = $request->q ? 5 : 20;
-            $exchange = $class == 'stocks' ? 'NASDAQ' : 'crypto';
-            $data = $this->fmp->get_search($query, $limit, $exchange);
+            if($class == 'stocks')
+                $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
+            else {
+                $params['statis'] = 'ACTIVE';
+                $params['asset_class'] = 'crypto';
+                $assets = $this->alpaca->asset->getAssetsAll($params);
+                $data = array_slice($assets, 0, 20);
+            }
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
@@ -371,22 +377,24 @@ class StocksController extends Controller
         return response()->json($position);
     }
 
-    public function getQuote($symbol)
+    public function getQuote(Request $request)
     {
         try {
+            $symbol = $request->symbol;
             $user = Auth::user();
-            $quotes = $this->fmp->get_quote($symbol);
+            $otherSymbol = str_replace('/', '', $symbol);
+            $quotes = $this->fmp->get_quote($otherSymbol);
             $quote = $quotes[0];
             $quote->isFavourite = false;
             if(isset($user->watchlist_id)) {
                 $watchlist = $this->alpaca->trade->getWatchlistById($user->account_id, $user->watchlist_id);
                 $assets = $watchlist['assets'];
                 foreach($assets as $asset) {
-                    if($asset['symbol'] == $quote->symbol)
+                    if($asset['symbol'] == $symbol)
                         $quote->isFavourite = true;
                 }
             }
-            $company = $this->fmp->get_company($symbol);
+            $company = $this->fmp->get_company($otherSymbol);
             if(count($company) > 0)
                 $quote->company = $company[0];
             return response()->json($quote);
