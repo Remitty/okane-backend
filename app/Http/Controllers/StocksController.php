@@ -67,9 +67,9 @@ class StocksController extends Controller
         $params = $alpacaRepo->paramsForCreateAccount($user);
         try {
             if(isset($user->account_id))
-                $res = $this->alpaca->account->create($params);
-            else
                 $res = $this->alpaca->account->update($user->account_id, $params);
+            else
+                $res = $this->alpaca->account->create($params);
 
             $alpacaRepo->updateAccountToUser($user, $res);
         } catch (\Throwable $th) {
