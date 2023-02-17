@@ -149,7 +149,7 @@ class FmpApi
     {
         try {
             $result = $this->query_builder('/profile/'.$asset);
-            return $result[0];
+            return $result;
         } catch (\Throwable $th) {
             throw $th;
         }

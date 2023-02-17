@@ -387,10 +387,12 @@ class StocksController extends Controller
                 }
             }
             $company = $this->fmp->get_company($symbol);
-            $quote->company = $company;
+            if(count($company) > 0)
+                $quote->company = $company[0];
             return response()->json($quote);
 
         } catch (\Throwable $th) {
+            Log::alert($th->getMessage());
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
@@ -519,6 +521,18 @@ class StocksController extends Controller
             } catch (\Throwable $th) {
                 //throw $th;
             }
+        }
+    }
+
+    public function listenAccountEvents()
+    {
+        try {
+            $params['since'] = '2023-01-28';
+            $events = $this->alpaca->events->getAccountsStatus($params);
+
+            return response()->json($events);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }
