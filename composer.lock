@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gitdevstar/alpaca-market-php-sdk.git",
-                "reference": "0a406acce473bdd488337ad841f8e1e929c42b16"
+                "reference": "f71080b8258ffd2d437a98b9622ef8c43c6f1403"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gitdevstar/alpaca-market-php-sdk/zipball/0a406acce473bdd488337ad841f8e1e929c42b16",
-                "reference": "0a406acce473bdd488337ad841f8e1e929c42b16",
+                "url": "https://api.github.com/repos/gitdevstar/alpaca-market-php-sdk/zipball/f71080b8258ffd2d437a98b9622ef8c43c6f1403",
+                "reference": "f71080b8258ffd2d437a98b9622ef8c43c6f1403",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +304,7 @@
                 "issues": "https://github.com/gitdevstar/alpaca-market-php-sdk/issues",
                 "source": "https://github.com/gitdevstar/alpaca-market-php-sdk/tree/main"
             },
-            "time": "2023-02-10T16:53:53+00:00"
+            "time": "2023-02-17T22:13:07+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8675,5 +8675,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

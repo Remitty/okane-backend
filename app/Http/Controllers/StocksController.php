@@ -419,13 +419,19 @@ class StocksController extends Controller
         }
     }
 
-    public function getMarketDataBars(Request $request, $symbol)
+    public function getMarketDataBars(Request $request)
     {
         try {
+            $symbol = $request->symbol;
             $params = [
                 'timeframe' => $request->timeframe,
                 'start' => $request->start
             ];
+            if(str_contains($symbol, '/')) {
+                $params['symbols'] = $symbol;
+                $bars = $this->alpacaMarket->crypto->historicalBars($params);
+                $data['bars'] = $bars['bars'][$symbol];
+            } else
             $data = $this->alpacaMarket->stocks->historicalBars($symbol, $params);
             return response()->json($data);
 
@@ -506,7 +512,7 @@ class StocksController extends Controller
                     Log::error('FCM error => '.$th->getMessage());
                 }
             }
-            // return response()->json($accounts);
+            return response()->json($accounts);
         } catch (\Throwable $th) {
             // return response()->json(['error' => $th->getMessage()], 500);
         }
