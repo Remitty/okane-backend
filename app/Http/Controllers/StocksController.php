@@ -156,14 +156,14 @@ class StocksController extends Controller
         if(!in_array($request->side, ['buy', 'sell']))
             return response()->json(['error' => 'The side field is required in buy or sell.'], 500);
 
-        $subtag = $request->tag ?? 'es_equity';
+        $subtag = str_contains($request->symbol, '/') ? 'crypto' : 'es_equity';
         $user = Auth::user();
         $params = [
             'symbol' => $request->symbol,
             'notional' => $request->amount,
             'side' => $request->side, // buy or sell
             'type' => 'market',
-            'time_in_force' => 'day',
+            'time_in_force' => $subtag == 'es_equity' ? 'day' : 'gtc',
             'commission' => $subtag == 'es_equity' ? 0.5 : $request->amount * 0.01,
             'subtag' =>  $subtag// es_equity / crypto
         ];
