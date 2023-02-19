@@ -384,6 +384,9 @@ class StocksController extends Controller
             $user = Auth::user();
             $otherSymbol = str_replace('/', '', $symbol);
             $quotes = $this->fmp->get_quote($otherSymbol);
+            if(count($quotes) == 0) {
+                return response()->json(['error' => "No support for trading"], 500);
+            }
             $quote = $quotes[0];
             $quote->isFavourite = false;
             if(isset($user->watchlist_id)) {
