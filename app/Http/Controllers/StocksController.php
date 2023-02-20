@@ -106,17 +106,17 @@ class StocksController extends Controller
              * @var \App\Models\User
              */
             $user = Auth::user();
-            $bank = $this->alpaca->funding->createAchRelationship($user->account_id, ['processor_token' => $processorToken]);
+            $ach = $this->alpaca->funding->createAchRelationship($user->account_id, ['processor_token' => $processorToken]);
 
-            Bank::create([
+            $bank = Bank::create([
                 'user_id' => $user->id,
                 'type' => 'ach',
-                'relation_id' => $bank['id'],
-                'routing_number' => $bank['bank_routing_number'],
-                'account_number' => $bank['bank_account_number'],
-                'owner_name' => $bank['account_owner_name'],
-                'nickname' => $bank['nickname'],
-                'status' => $bank['status']
+                'relation_id' => $ach['id'],
+                'routing_number' => $ach['bank_routing_number'],
+                'account_number' => $ach['bank_account_number'],
+                'owner_name' => $ach['account_owner_name'],
+                'nickname' => $ach['nickname'],
+                'status' => $ach['status']
             ]);
 
             $user->update(['bank_linked' => true]);
