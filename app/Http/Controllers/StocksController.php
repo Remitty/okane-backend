@@ -528,11 +528,13 @@ class StocksController extends Controller
 
                 $user = $openOrder->user;
                 $order = $this->alpaca->trade->getOrder($user->account_id, $openOrder->order_id);
-                if($order['status'] !== 'accepted') {
+                if($order['status'] !== 'accepted' && $order['status'] !== 'new') {
                     (new Larafirebase)->withTitle('Order Status')
                             ->withBody($order['symbol']."'s order is " . $order['status'])
                             ->sendMessage($user->device_token);
-                    $openOrder->delete();
+                    if( ! str_contains($order['status'], 'pending') ) {
+                        $openOrder->delete();
+                    }
                 }
 
             } catch (\Throwable $th) {
