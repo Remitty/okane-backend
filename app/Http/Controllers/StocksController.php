@@ -515,7 +515,7 @@ class StocksController extends Controller
                     Log::error('FCM error => '.$th->getMessage());
                 }
             }
-            return response()->json($accounts);
+            // return response()->json($accounts);
         } catch (\Throwable $th) {
             // return response()->json(['error' => $th->getMessage()], 500);
         }
