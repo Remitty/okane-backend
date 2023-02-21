@@ -160,13 +160,21 @@ class StocksController extends Controller
         $user = Auth::user();
         $params = [
             'symbol' => $request->symbol,
-            'notional' => $request->amount,
             'side' => $request->side, // buy or sell
             'type' => 'market',
             'time_in_force' => $subtag == 'es_equity' ? 'day' : 'gtc',
             'commission' => $subtag == 'es_equity' ? 0.5 : $request->amount * 0.01,
             'subtag' =>  $subtag// es_equity / crypto
         ];
+        try {
+            $asset = $this->alpaca->asset->getAssetBySymbol($request->symbol);
+            if($asset['fractionable']) $params['notional'] = $request->amount;
+            else $params['qty'] = $request->qty;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $params['qty'] = $request->qty;
+        }
+
         try {
             $order = $this->alpaca->trade->createOrder($user->account_id, $params);
             if(strtolower($order['status']) == 'accepted') {
