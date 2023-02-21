@@ -56,6 +56,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('bank', [StocksController::class, 'deleteBank']);
 
     Route::post('device_token', [ApiController::class, 'setDeviceToken']);
+
+    Route::get('notifications', [StocksController::class, 'getNotifications']);
+    Route::delete('notifications', [StocksController::class, 'deleteAllNotifications']);
+    Route::delete('notifications/{id}', [StocksController::class, 'deleteNotification']);
 });
 
 Route::get('accounts', [StocksController::class, 'checkAccounts']);

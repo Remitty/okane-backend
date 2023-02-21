@@ -7,13 +7,13 @@ use Alpaca\Market\Alpaca as AlpacaMarket;
 use App\Libs\PlaidAPI;
 use App\Libs\FmpAPI;
 use App\Models\Bank;
+use App\Models\Notification;
 use App\Models\OpenOrder;
 use App\Models\User;
 use App\Repositories\AlpacaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Kutia\Larafirebase\Services\Larafirebase;
 
 class StocksController extends Controller
 {
@@ -494,6 +494,50 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+
+    public function getNotifications()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        try {
+            $notifications = $user->notifications;
+            return response()->json($notifications);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function deleteAllNotifications()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        try {
+            Notification::where('user_id', $user->id)->delete();
+            return response()->json([]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function deleteNotification($id)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        try {
+            $user = Auth::user();
+            Notification::find($id)->delete();
+            $notifications = $user->notifications;
+            return response()->json($notifications);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+
+    }
+
     public function checkAccounts(AlpacaRepository $alpacaRepo)
     {
         try {
@@ -501,13 +545,14 @@ class StocksController extends Controller
             $accounts = $this->alpaca->account->getAll();
             foreach ($accounts as $account) {
                 try {
+                    /**
+                     * @var \App\Models\User
+                     */
                     $user = User::where('account_id', $account['id'])->first();
                     $status = $account['status'];
                     if(isset($user) && $status != $user->account_status) {
                         $message = $alpacaRepo->descriptionForAccountStatus($status);
-                        (new Larafirebase)->withTitle('Account Status')
-                            ->withBody($message)
-                            ->sendMessage($user->device_token);
+                        $user->sendNotification('Account Status', $message);
                         $user->update(['account_status' => $status]);
                     }
 
@@ -525,15 +570,14 @@ class StocksController extends Controller
         $openOrders = OpenOrder::all();
         foreach ($openOrders as $openOrder) {
             try {
-
+                /**
+                 * @var \App\Models\User
+                 */
                 $user = $openOrder->user;
                 $order = $this->alpaca->trade->getOrder($user->account_id, $openOrder->order_id);
                 $status = str_replace('_', ' ', $order['status']);
                 if($status !== 'accepted' && $status !== 'new') {
-
-                    (new Larafirebase)->withTitle('Order Status')
-                            ->withBody($order['symbol']."'s order is " . $status)
-                            ->sendMessage($user->device_token);
+                    $user->sendNotification('Order Status', $order['symbol']."'s order is " . $status);
                     if( ! str_contains($status, 'pending') ) {
                         $openOrder->delete();
                     }
