@@ -509,6 +509,19 @@ class StocksController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+    public function getNewNotifications()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        try {
+            $notifications = $user->newNotifications;
+            return response()->json($notifications);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
     public function deleteAllNotifications()
     {
         /**
@@ -532,6 +545,34 @@ class StocksController extends Controller
             Notification::find($id)->delete();
             $notifications = $user->notifications;
             return response()->json($notifications);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+
+    }
+    public function markAsReadNotification($id)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        try {
+            $user = Auth::user();
+            Notification::find($id)->update(['is_read' => 1]);
+            return response()->json(['success' => true]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+
+    }
+    public function markAsReadAllNotifications()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        try {
+            $user = Auth::user();
+            Notification::where('user_id', $user->id)->update(['is_read' => 1]);
+            return response()->json(['success' => true]);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

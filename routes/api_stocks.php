@@ -58,8 +58,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('device_token', [ApiController::class, 'setDeviceToken']);
 
     Route::get('notifications', [StocksController::class, 'getNotifications']);
+    Route::get('notifications/new', [StocksController::class, 'getNewNotifications']);
     Route::delete('notifications', [StocksController::class, 'deleteAllNotifications']);
     Route::delete('notifications/{id}', [StocksController::class, 'deleteNotification']);
+    Route::post('notifications/{id}/read', [StocksController::class, 'markAsReadNotification']);
+    Route::post('notifications/read', [StocksController::class, 'markAsReadAllNotifications']);
 });
 
 Route::get('accounts/check', [StocksController::class, 'checkAccounts']);

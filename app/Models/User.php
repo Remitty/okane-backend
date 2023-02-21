@@ -101,7 +101,11 @@ class User extends Authenticatable
 
     public function notifications()
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Notification::class)->orderBy('id', 'desc');
+    }
+    public function newNotifications()
+    {
+        return $this->hasMany(Notification::class)->where('is_read', 0);
     }
 
     public function sendNotification($title, $message)
