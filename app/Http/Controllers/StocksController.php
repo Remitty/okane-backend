@@ -166,14 +166,16 @@ class StocksController extends Controller
             'commission' => $subtag == 'es_equity' ? 0.5 : $request->amount * 0.01,
             'subtag' =>  $subtag// es_equity / crypto
         ];
-        try {
-            $asset = $this->alpaca->asset->getAssetBySymbol($request->symbol);
-            if($asset['fractionable']) $params['notional'] = $request->amount;
-            else $params['qty'] = $request->qty;
-        } catch (\Throwable $th) {
-            //throw $th;
-            $params['qty'] = $request->qty;
-        }
+        // try {
+        //     $asset = $this->alpaca->asset->getAssetBySymbol($request->symbol);
+        //     if($asset['fractionable']) $params['notional'] = $request->amount;
+        //     else $params['qty'] = $request->qty;
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     $params['qty'] = $request->qty;
+        // }
+
+        $params['qty'] = $request->qty;
 
         try {
             $order = $this->alpaca->trade->createOrder($user->account_id, $params);
