@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Kutia\Larafirebase\Services\Larafirebase;
+use Kutia\Larafirebase\Facades\Larafirebase;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -111,7 +111,7 @@ class User extends Authenticatable
             'title' => $title,
             'message' => $message
         ]);
-        (new Larafirebase)->withTitle($title)
+        Larafirebase::withTitle($title)
                 ->withBody($message)
                 ->withAdditionalData(['id' => $notification->id])
                 ->sendMessage($this->device_token);

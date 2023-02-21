@@ -62,5 +62,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('notifications/{id}', [StocksController::class, 'deleteNotification']);
 });
 
-Route::get('accounts', [StocksController::class, 'checkAccounts']);
+Route::get('accounts/check', [StocksController::class, 'checkAccounts']);
+Route::get('orders/check', [StocksController::class, 'checkOpenOrders']);
 Route::get('events/accounts', [StocksController::class, 'listenAccountEvents']);
