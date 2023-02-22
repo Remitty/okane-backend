@@ -17,11 +17,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('6hourly:callbackcheck')->everySixHours()->runInBackground();
         $schedule->command('3hourly:checkaccount')->everyThreeHours()->runInBackground();
-        $schedule->command('hourly:checkOpenOrder')->weekdays()
-        ->hourly()
-        ->timezone('America/Chicago')
-        ->between('8:00', '17:00')
-        ->runInBackground();
+        // $schedule->command('hourly:checkOpenOrder')->weekdays()
+        // ->hourly()
+        // ->timezone('America/Chicago')
+        // ->between('8:00', '17:00')
+        // ->runInBackground();
     }
 
     /**
