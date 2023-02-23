@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\StocksController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,8 @@ Route::post('/login', [ApiController::class, 'authenticate']);
 Route::post('/signup', [ApiController::class, 'register']);
 Route::post('/validate/otp', [OtpController::class, 'validateOtp']);
 Route::post('/resend/otp', [OtpController::class, 'resendOtp']);
+Route::post('/forgot-password', [ForgotPasswordController::class, 'mobile']);
+Route::post('/reset-password', [ResetPasswordController::class, 'mobile']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);
