@@ -90,7 +90,7 @@ class ApiController extends Controller
         try {
             $otp = (new OtpController)->requestForOtp($request->email);
         } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Can not send OTP with the email'], 500);
         }
         $userdata = $request->all();
         $userdata['password'] = Hash::make($request->password);

@@ -35,7 +35,7 @@ class ForgotPasswordController extends Controller
 
             return response()->json($otp);
         } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Can not send OTP with the email'], 500);
         }
     }
 }
