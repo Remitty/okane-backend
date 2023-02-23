@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\OtpController;
 use App\Models\Country;
-use App\Models\Document;
 use App\Models\User;
-use Exception;
-use Ferdous\OtpValidator\Constants\StatusCodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,8 +58,7 @@ class ApiController extends Controller
             try {
                 $otp = (new OtpController)->requestForOtp($request->email);
 
-                if($otp['code'] == StatusCodes::SUCCESSFULLY_SENT_OTP)
-                    $data['otp_id'] = $otp['uniqueId'];
+                $data['otp_id'] = $otp['uniqueId'];
             } catch (\Throwable $e) {
                 return response()->json(['error' => $e->getMessage()], 500);
             }
@@ -93,8 +89,6 @@ class ApiController extends Controller
 
         try {
             $otp = (new OtpController)->requestForOtp($request->email);
-            if($otp['code'] != StatusCodes::SUCCESSFULLY_SENT_OTP)
-                throw new Exception($otp['message']);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
