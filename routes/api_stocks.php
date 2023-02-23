@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\StocksController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [ApiController::class, 'authenticate']);
 Route::post('/signup', [ApiController::class, 'register']);
+Route::post('/validate/otp', [OtpController::class, 'validateOtp']);
+Route::post('/resend/otp', [OtpController::class, 'resendOtp']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::patch('/profile', [ApiController::class, 'updateProfile']);

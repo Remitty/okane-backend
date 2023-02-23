@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\OtpController;
 use App\Models\Country;
 use App\Models\Document;
 use App\Models\User;
+use Exception;
+use Ferdous\OtpValidator\Constants\StatusCodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +57,18 @@ class ApiController extends Controller
         $data['user'] = $user;
         $data['user']['bank'] = $user->bank;
 
+        if(is_null($user->email_verified_at)) {
+            try {
+                $otp = (new OtpController)->requestForOtp($request->email);
+
+                if($otp['code'] == StatusCodes::SUCCESSFULLY_SENT_OTP)
+                    $data['otp_id'] = $otp['uniqueId'];
+            } catch (\Throwable $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+
+        }
+
         return response()->json($data);
     }
 
@@ -76,6 +91,13 @@ class ApiController extends Controller
         if(User::where('email', $request->email)->count() > 0)
             return response()->json(['error' => 'Already exists an user with the email.', 'code' => 0], 500);
 
+        try {
+            $otp = (new OtpController)->requestForOtp($request->email);
+            if($otp['code'] != StatusCodes::SUCCESSFULLY_SENT_OTP)
+                throw new Exception($otp['message']);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
         $userdata = $request->all();
         $userdata['password'] = Hash::make($request->password);
         $user = User::create($userdata);
@@ -97,6 +119,7 @@ class ApiController extends Controller
 
         $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
         $data['user'] = $user;
+        $data['otp_id'] = $otp['uniqueId'];
 
         return response()->json($data);
     }

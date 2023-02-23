@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e852b12b5bbbe9ce58046c9b0b760755",
+    "content-hash": "ed7edc0c8be8421d4b5c6af98966e7f3",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -827,6 +827,73 @@
                 }
             ],
             "time": "2022-02-20T15:07:15+00:00"
+        },
+        {
+            "name": "gitdevstar/laravel-otp-validate",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gitdevstar/laravel-otp-validate.git",
+                "reference": "569da6e57d9e0fd2331b02f8c916825bc3c13615"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gitdevstar/laravel-otp-validate/zipball/569da6e57d9e0fd2331b02f8c916825bc3c13615",
+                "reference": "569da6e57d9e0fd2331b02f8c916825bc3c13615",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.179",
+                "guzzlehttp/guzzle": "^7.0.1",
+                "nesbot/carbon": "^2.22",
+                "php": "^7.1.8|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0@dev"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ferdous\\OtpValidator\\OtpValidatorServiceProvider"
+                    ],
+                    "aliases": {
+                        "OtpVerifier": "Ferdous\\OtpValidator\\OtpValidatorFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ferdous\\OtpValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Logan P",
+                    "email": "loganph.work@gmail.com"
+                }
+            ],
+            "description": "Laravel package for OTP validation with built-in features like retry and resend mechanism. Built in max retry and max resend blocking. OTP/Security Code can be send over SMS or Email of your choice with user-defined template.",
+            "homepage": "https://github.com/gitdevstar/laravel-otp-validate",
+            "keywords": [
+                "email",
+                "laravel",
+                "otp",
+                "otp-validation",
+                "php",
+                "resend",
+                "retry",
+                "security-code",
+                "sms"
+            ],
+            "support": {
+                "source": "https://github.com/gitdevstar/laravel-otp-validate/tree/1.4.2"
+            },
+            "time": "2022-06-09T02:44:10+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -8675,5 +8742,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
