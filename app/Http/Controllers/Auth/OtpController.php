@@ -11,6 +11,7 @@ use Ferdous\OtpValidator\Object\OtpRequestObject;
 use Ferdous\OtpValidator\OtpValidator;
 use Ferdous\OtpValidator\Object\OtpValidateRequestObject;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Date;
 
 class OtpController extends Controller
 {
@@ -23,7 +24,7 @@ class OtpController extends Controller
     {
         is_null($email) ? Config::set('otp.send-by.email', 0) : Config::set('otp.send-by.email', 1);
         is_null($phone) ? Config::set('otp.send-by.sms', 0) : Config::set('otp.send-by.sms', 1);
-        $clientId = $email ?? $phone;
+        $clientId = time();
         $type = isset($email) ? 'email' : 'phone';
         $otp = OtpValidator::requestOtp(
             new OtpRequestObject($clientId, $type, $phone, $email)
