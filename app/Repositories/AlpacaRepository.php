@@ -47,7 +47,7 @@ class AlpacaRepository
                 [
                     "document_type"=> "identity_verification",
                     // "document_sub_type"=> "passport",
-                    "content"=> base64_encode(file_get_contents(get_file_link($user->document->content))),
+                    "content"=> base64_encode(file_get_contents(get_file_link($user->doc))),
                     "mime_type"=> "image/jpeg"
                 ]
             ],
