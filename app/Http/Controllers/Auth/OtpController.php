@@ -44,7 +44,7 @@ class OtpController extends Controller
         $res = OtpValidator::validateOtp(
             new OtpValidateRequestObject($uniqId,$otp)
         );
-        if($request->has('email')) {
+        if($request->has('email') && $res['code'] == StatusCodes::OTP_VERIFIED) {
             $user = User::where('email', $request->email)->first();
             $user->update(['email_verified_at' => now()]);
         }
