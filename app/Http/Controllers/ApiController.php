@@ -137,6 +137,8 @@ class ApiController extends Controller
         $user = Auth::user();
         if($request->has('verify_doc')) {
             $file = $request->file('verify_doc');
+            if($file->getSize() > 2097152) // byte => 2M
+                return response()->json(['error' => 'The file must be less than 2M', 'code' => 1], 500);
             $verify_doc = $file->storeAs('documents', $user->id.'.'.$file->getClientOriginalExtension(), 'public');
             // Document::updateOrCreate([
             //     'user_id' => $user->id
