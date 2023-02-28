@@ -135,18 +135,23 @@ class ApiController extends Controller
          * @var \App\Models\User
          */
         $user = Auth::user();
-        if($request->has('verify_doc')) {
-            $file = $request->file('verify_doc');
-            if($file->getSize() > 2097152) // byte => 2M
-                return response()->json(['error' => 'The file must be less than 2M', 'code' => 1], 500);
-            $verify_doc = $file->storeAs('documents', $user->id.'.'.$file->getClientOriginalExtension(), 'public');
-            // Document::updateOrCreate([
-            //     'user_id' => $user->id
-            // ], [
-            //     'content' => $verify_doc
-            // ]);
-            $user->update(['profile_completion' => 'document', 'doc' => get_file_link($verify_doc)]);
+        $file = $request->file('verify_doc');
+        if (is_null($file)) {
+            return response()->json(['error' => 'The verify_doc field must be a file.', 'code' => 1], 500);
         }
+        if(! in_array(strtolower($file->getClientOriginalExtension()), ['png', 'jpeg', 'jpg', 'pdf'])) {
+            return response()->json(['error' => 'The file must be in png, jpeg, jpg, pdf.', 'code' => 1], 500);
+        }
+        if($file->getSize() > 2097152) // byte => 2M
+            return response()->json(['error' => 'The file must be less than 2M', 'code' => 1], 500);
+
+        $verify_doc = $file->storeAs('documents', $user->id.'.'.$file->getClientOriginalExtension(), 'public');
+        // Document::updateOrCreate([
+        //     'user_id' => $user->id
+        // ], [
+        //     'content' => $verify_doc
+        // ]);
+        $user->update(['profile_completion' => 'document', 'doc' => get_file_link($verify_doc)]);
 
         return response()->json(['success' =>true]);
     }
