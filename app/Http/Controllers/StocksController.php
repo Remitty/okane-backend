@@ -639,4 +639,15 @@ class StocksController extends Controller
             }
         }
     }
+    public function getTopStocks()
+    {
+        try {
+            $topGainers = $this->fmp->get_top_gainers();
+            $topLosers = $this->fmp->get_top_losers();
+            $data = array_merge(array_slice($topGainers, 0, 5), array_slice($topLosers, 0, 5));
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }

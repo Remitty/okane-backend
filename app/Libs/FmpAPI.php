@@ -122,7 +122,7 @@ class FmpApi
             throw $th;
         }
     }
-    public function get_top_Losers()
+    public function get_top_losers()
     {
         try {
             $result = $this->query_builder('/losers');
