@@ -639,16 +639,4 @@ class StocksController extends Controller
             }
         }
     }
-
-    public function listenAccountEvents()
-    {
-        try {
-            $params['since'] = '2023-01-28';
-            $events = $this->alpaca->events->getAccountsStatus($params);
-
-            return response()->json($events);
-        } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-        }
-    }
 }

@@ -74,4 +74,3 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::get('accounts', [StocksController::class, 'checkAccounts']);
 Route::get('orders/check', [StocksController::class, 'checkOpenOrders']);
-Route::get('events/accounts', [StocksController::class, 'listenAccountEvents']);
