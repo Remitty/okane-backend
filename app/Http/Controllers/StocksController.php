@@ -163,7 +163,7 @@ class StocksController extends Controller
             'side' => $request->side, // buy or sell
             'type' => 'market',
             'time_in_force' => $subtag == 'es_equity' ? 'day' : 'gtc',
-            'commission' => $subtag == 'es_equity' ? 0.5 : $request->amount * 0.01,
+            'commission' => $subtag == 'es_equity' ? 0.6 : $request->amount * 0.03,
             'subtag' =>  $subtag// es_equity / crypto
         ];
         // try {
