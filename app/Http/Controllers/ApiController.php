@@ -29,7 +29,7 @@ class ApiController extends Controller
         if ($payload) {
 
             $user = User::updateOrCreate(['email' => $payload['email']], [
-                ['last_login' => now(), 'email_verified_at' => now()]
+                ['last_login' => now(), 'email_verified_at' => now(), 'password' => 'empty']
             ]);
 
             $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
