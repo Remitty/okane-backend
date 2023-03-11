@@ -28,9 +28,18 @@ class ApiController extends Controller
         $payload = $client->verifyIdToken($request->id_token);
         if ($payload) {
 
-            $user = User::updateOrCreate(['email' => $payload['email']], [
-                ['last_login' => now(), 'email_verified_at' => now(), 'password' => 'empty']
-            ]);
+            $user = User::where('email', $payload['email'])->first();
+            if(! isset($user)) {
+                $user = User::create([
+                    'email' => $payload['email'],
+                    'password' => 'empty',
+                    'last_login' => now(),
+                    'email_verified_at' => now()
+                ]);
+            } else {
+                $user->last_login = now();
+                $user->save();
+            }
 
             $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
             $data['user'] = $user;
