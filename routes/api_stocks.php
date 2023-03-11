@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [ApiController::class, 'authenticate']);
+Route::post('/login/google', [ApiController::class, 'googleSign']);
 Route::post('/signup', [ApiController::class, 'register']);
 Route::post('/validate/otp', [OtpController::class, 'validateOtp']);
 Route::post('/resend/otp', [OtpController::class, 'resendOtp']);

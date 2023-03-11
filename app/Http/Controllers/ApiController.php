@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Google_Client;
 
 class ApiController extends Controller
 {
@@ -19,6 +20,27 @@ class ApiController extends Controller
      */
     public function __construct()
     {
+    }
+
+    public function googleSign(Request $request)
+    {
+        $client = new Google_Client(['client_id' => config('services.google.client_id')]);  // Specify the CLIENT_ID of the app that accesses the backend
+        $payload = $client->verifyIdToken($request->id_token);
+        if ($payload) {
+
+            $user = User::updateOrCreate(['email' => $payload['email']], [
+                ['last_login' => now(), 'email_verified_at' => now()]
+            ]);
+
+            $data['token'] = "Bearer " . $user->createToken('api')->plainTextToken;
+            $data['user'] = $user;
+            $data['user']['bank'] = $user->bank;
+
+            return response()->json($data);
+        } else {
+          // Invalid ID token
+          return response()->json(['status' => false, 'message' => 'Invalid gmail']);
+        }
     }
 
     public function authenticate(Request $request)
