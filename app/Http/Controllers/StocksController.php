@@ -363,10 +363,16 @@ class StocksController extends Controller
             $user = Auth::user();
             $positions = $this->alpaca->trade->getAllPositions($user->account_id);
             $symbols = implode(',' , array_column($positions, 'symbol'));
-            $quotes = $this->fmp->get_quote($symbols);
-            foreach ($positions as $index => $position) {
-                $idx = array_search($position['symbol'], array_column($quotes, 'symbol'));
-                $positions[$index]['name'] = $quotes[$idx]->name;
+            try {
+                $quotes = $this->fmp->get_quote($symbols);
+                foreach ($positions as $index => $position) {
+                    $idx = array_search($position['symbol'], array_column($quotes, 'symbol'));
+                    $positions[$index]['name'] = $quotes[$idx]->name;
+                }
+            } catch (\Throwable $th) {
+                foreach ($positions as $index => $position) {
+                    $positions[$index]['name'] = '';
+                }
             }
             return response()->json($positions);
         } catch (\Throwable $th) {
