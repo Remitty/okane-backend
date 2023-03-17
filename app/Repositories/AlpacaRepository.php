@@ -60,7 +60,8 @@ class AlpacaRepository
                 'agreement' => 'crypto_agreement',
                 'signed_at' => today(),
                 'ip_address' => $user->ip_address ?? ''
-            ]]
+            ]],
+            'currency' => $user->country_code == 'USA' ? "USD" : 'EUR'
         ];
         if($user->public_shareholder || $user->is_affiliated_exchange_or_finra) {
             if($user->public_shareholder) $context = 'CONTROLLED_FIRM';

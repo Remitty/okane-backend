@@ -12,6 +12,7 @@ class Country extends Model
     protected $fillable = [
         'name',
         'short_code',
+        'tax_id_type'
     ];
 
     public $timestamps = false;

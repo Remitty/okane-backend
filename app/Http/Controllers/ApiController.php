@@ -155,7 +155,12 @@ class ApiController extends Controller
          * @var \App\Models\User
          */
         $user = Auth::user();
-        $user->update($request->all());
+        $data = $request->all();
+        if($request->has('tax_id')) {
+            $country = Country::where('short_code', $user->country_code)->first();
+            $data['tax_id_type'] = isset($country) ? $country->tax_id_type : 'SSN';
+        }
+        $user->update($data);
 
         return response()->json($user);
     }
