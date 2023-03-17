@@ -511,6 +511,47 @@ class StocksController extends Controller
         }
     }
 
+    public function getCipToken()
+    {
+        $user = Auth::user();
+        $accountId = $user->account_id;
+
+        try {
+            $data = [
+                'referr' => 'com.remitty.okane',
+                'platform' => 'mobile'
+            ];
+            $res = $this->alpaca->account->getOnfidoToken($accountId, $data);
+            return response()->json($res);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function updateCip(Request $request)
+    {
+        if(! $request->has('outcome'))
+            return response()->json(['error' => 'The outcome field is required'], 500);
+        if(! $request->has('cip_token'))
+            return response()->json(['error' => 'The cip_token field is required'], 500);
+        if(! in_array($request->outcome, ['not_started', 'user_exited', 'sdk_error', 'user_completed']))
+            return response()->json(['error' => 'Invalid outcome'], 500);
+
+        $user = Auth::user();
+        $accountId = $user->account_id;
+        try {
+            $data = [
+                "outcome"=> strtoupper($request->outcome),
+                "reason"=> $request->reason,
+                "token"=> $request->cip_token
+            ];
+            $res = $this->alpaca->account->updateOnfidoToken($accountId, $data);
+            return response()->json($res);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
 
     public function getNotifications()
     {

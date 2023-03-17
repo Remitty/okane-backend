@@ -71,6 +71,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('notifications/{id}', [StocksController::class, 'deleteNotification']);
     Route::post('notifications/{id}/read', [StocksController::class, 'markAsReadNotification']);
     Route::post('notifications/read', [StocksController::class, 'markAsReadAllNotifications']);
+
+    Route::get('cip_token', [StocksController::class, 'getCipToken']);
+    Route::post('cip_token', [StocksController::class, 'updateCip']);
 });
 
 Route::get('accounts', [StocksController::class, 'checkAccounts']);
