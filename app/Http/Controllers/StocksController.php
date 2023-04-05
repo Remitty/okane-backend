@@ -142,7 +142,8 @@ class StocksController extends Controller
                         $assets = $this->alpaca->asset->getAssetsAll($params);
                         $data = array_slice($assets, 0, 20);
                     } else {
-                        $data = $this->alpaca->asset->getAssetBySymbol($query);
+                        $data = [];
+                        array_push($data, $this->alpaca->asset->getAssetBySymbol($query));
                     }
                 }
             }
@@ -153,7 +154,8 @@ class StocksController extends Controller
                     $assets = $this->alpaca->asset->getAssetsAll($params);
                     $data = array_slice($assets, 0, 20);
                 } else {
-                    $data = $this->alpaca->asset->getAssetBySymbol($query);
+                    $data = [];
+                    array_push($data, $this->alpaca->asset->getAssetBySymbol($query));
                 }
             }
             return response()->json($data);
