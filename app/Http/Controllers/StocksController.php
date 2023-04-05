@@ -135,18 +135,26 @@ class StocksController extends Controller
                 try {
                     $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
                 } catch (\Throwable $th) {
-                    $params['status'] = 'active';
-                    $params['tradable'] = true;
-                    $params['asset_class'] = 'us_equity';
-                    $assets = $this->alpaca->asset->getAssetsAll($params);
-                    $data = array_slice($assets, 0, 20);
+                    if ($query == '') {
+                        $params['status'] = 'active';
+                        // $params['tradable'] = true;
+                        $params['asset_class'] = 'us_equity';
+                        $assets = $this->alpaca->asset->getAssetsAll($params);
+                        $data = array_slice($assets, 0, 20);
+                    } else {
+                        $data = $this->alpaca->asset->getAssetBySymbol($query);
+                    }
                 }
             }
             else {
-                $params['status'] = 'active';
-                $params['asset_class'] = 'crypto';
-                $assets = $this->alpaca->asset->getAssetsAll($params);
-                $data = array_slice($assets, 0, 20);
+                if ($query == '') {
+                    $params['status'] = 'active';
+                    $params['asset_class'] = 'crypto';
+                    $assets = $this->alpaca->asset->getAssetsAll($params);
+                    $data = array_slice($assets, 0, 20);
+                } else {
+                    $data = $this->alpaca->asset->getAssetBySymbol($query);
+                }
             }
             return response()->json($data);
         } catch (\Throwable $th) {
