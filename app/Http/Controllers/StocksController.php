@@ -151,12 +151,13 @@ class StocksController extends Controller
                 if ($query == '') {
                     $params['status'] = 'active';
                     $params['asset_class'] = 'crypto';
-                    $assets = $this->alpaca->asset->getAssetsAll($params);
-                    $data = array_slice($assets, 0, 20);
-                } else {
-                    $data = [];
-                    array_push($data, $this->alpaca->asset->getAssetBySymbol($query));
+                    $data = $this->alpaca->asset->getAssetsAll($params);
+                    // $data = array_slice($assets, 0, 20);
                 }
+                //  else {
+                //     $data = [];
+                //     array_push($data, $this->alpaca->asset->getAssetBySymbol($query));
+                // }
             }
             return response()->json($data);
         } catch (\Throwable $th) {
