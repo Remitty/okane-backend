@@ -131,8 +131,16 @@ class StocksController extends Controller
         try {
             $query = $request->q ?? '';
             $limit = $request->q ? 5 : 20;
-            if($class == 'stocks')
-                $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
+            if($class == 'stocks') {
+                try {
+                    $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
+                } catch (\Throwable $th) {
+                    $params['statis'] = 'ACTIVE';
+                    $params['asset_class'] = 'us_equity';
+                    $assets = $this->alpaca->asset->getAssetsAll($params);
+                    $data = array_slice($assets, 0, 20);
+                }
+            }
             else {
                 $params['statis'] = 'ACTIVE';
                 $params['asset_class'] = 'crypto';
@@ -156,15 +164,15 @@ class StocksController extends Controller
         if(!in_array($request->side, ['buy', 'sell']))
             return response()->json(['error' => 'The side field is required in buy or sell.'], 500);
 
-        $subtag = str_contains($request->symbol, '/') ? 'crypto' : 'es_equity';
+        $subtag = str_contains($request->symbol, '/') ? 'crypto' : 'us_equity';
         $user = Auth::user();
         $params = [
             'symbol' => $request->symbol,
             'side' => $request->side, // buy or sell
             'type' => 'market',
-            'time_in_force' => $subtag == 'es_equity' ? 'day' : 'gtc',
-            'commission' => $subtag == 'es_equity' ? 0.6 : $request->amount * 0.03,
-            'subtag' =>  $subtag// es_equity / crypto
+            'time_in_force' => $subtag == 'us_equity' ? 'day' : 'gtc',
+            'commission' => $subtag == 'us_equity' ? 0.6 : $request->amount * 0.03,
+            'subtag' =>  $subtag// us_equity / crypto
         ];
         // try {
         //     $asset = $this->alpaca->asset->getAssetBySymbol($request->symbol);
