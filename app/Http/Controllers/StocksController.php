@@ -135,14 +135,14 @@ class StocksController extends Controller
                 try {
                     $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
                 } catch (\Throwable $th) {
-                    $params['status'] = 'ACTIVE';
+                    $params['status'] = 'active';
                     $params['asset_class'] = 'us_equity';
                     $assets = $this->alpaca->asset->getAssetsAll($params);
                     $data = array_slice($assets, 0, 20);
                 }
             }
             else {
-                $params['status'] = 'ACTIVE';
+                $params['status'] = 'active';
                 $params['asset_class'] = 'crypto';
                 $assets = $this->alpaca->asset->getAssetsAll($params);
                 $data = array_slice($assets, 0, 20);
