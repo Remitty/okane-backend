@@ -146,7 +146,7 @@ class StocksController extends Controller
                         $assets = $this->alpaca->asset->getAssetsAll($params);
                         $term = [];
                         foreach ($assets as $item) {
-                            if($item->tradable)
+                            if($item['tradable'])
                                 array_push($term, $item);
                         }
                         $data = array_slice($term, 0, $limit);
