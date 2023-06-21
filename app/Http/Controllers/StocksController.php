@@ -132,11 +132,12 @@ class StocksController extends Controller
             $query = $request->q ?? '';
             $limit = $request->q ? 5 : 20;
             if($class == 'stocks') {
-                try {
-                    $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
-                } catch (\Throwable $th) {
-                    $data = [];
-                }
+                $data = [];
+                // try {
+                //     $data = $this->fmp->get_search($query, $limit, 'NASDAQ');
+                // } catch (\Throwable $th) {
+                //     $data = [];
+                // }
                 if (count($data) == 0) {
                     if ($query == '') {
                         $params['status'] = 'active';
