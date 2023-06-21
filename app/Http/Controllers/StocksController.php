@@ -144,7 +144,12 @@ class StocksController extends Controller
                         // $params['tradable'] = true;
                         $params['asset_class'] = 'us_equity';
                         $assets = $this->alpaca->asset->getAssetsAll($params);
-                        $data = array_slice($assets, 0, $limit);
+                        $term = [];
+                        foreach ($assets as $item) {
+                            if($item->tradable)
+                                array_push($term, $item);
+                        }
+                        $data = array_slice($term, 0, $limit);
                     } else {
                         $data = [];
                         array_push($data, $this->alpaca->asset->getAssetBySymbol($query));
