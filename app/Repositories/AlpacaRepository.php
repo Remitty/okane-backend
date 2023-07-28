@@ -115,12 +115,12 @@ class AlpacaRepository
                 'family_name' => $user->last_name,
                 'funding_source' => explode(",", $user->funding_source)
             ],
-            'disclosures' => [
-                'is_control_person' => $user->public_shareholder == 1 ? true : false,
-                'is_affiliated_exchange_or_finra' => $user->is_affiliated_exchange_or_finra == 1 ? true : false,
-                'is_politically_exposed' => $user->is_politically_exposed == 1 ? true : false,
-                'immediate_family_exposed' => $user->immediate_family_exposed == 1 ? true : false
-            ],
+            // 'disclosures' => [
+            //     'is_control_person' => $user->public_shareholder == 1 ? true : false,
+            //     'is_affiliated_exchange_or_finra' => $user->is_affiliated_exchange_or_finra == 1 ? true : false,
+            //     'is_politically_exposed' => $user->is_politically_exposed == 1 ? true : false,
+            //     'immediate_family_exposed' => $user->immediate_family_exposed == 1 ? true : false
+            // ],
             'trusted_contact' => [
                 'given_name' => $user->first_name,
                 'family_name' => $user->last_name,
