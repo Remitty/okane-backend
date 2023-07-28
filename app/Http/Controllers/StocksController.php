@@ -63,12 +63,47 @@ class StocksController extends Controller
 
         $params = $alpacaRepo->paramsForCreateAccount($user);
         try {
+            $res = $this->alpaca->account->create($params);
+
+            $user->update([
+                'account_id' => $res['id'],
+                'account_number' => $res['account_number'],
+                'account_status' => $res['status'],
+                'account_currency' => $res['currency'],
+                'account_type' => $res['account_type'],
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+
+        return response()->json($user);
+    }
+
+    /**
+     * @param \App\Repositories\AlpacaRepository
+     */
+    public function updateAccount(Request $request, AlpacaRepository $alpacaRepo)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $data = $request->all();
+        // if($request->has('tax_id')) {
+        //     $country = Country::where('short_code', $user->country_code)->first();
+        //     $data['tax_id_type'] = isset($country) ? $country->tax_id_type : 'SSN';
+        // }
+        $user->update($data);
+
+        $user = Auth::user();
+
+        $params = $alpacaRepo->paramsForUpdateAccount($user);
+        try {
             if(isset($user->account_id))
                 $res = $this->alpaca->account->update($user->account_id, $params);
             else
-                $res = $this->alpaca->account->create($params);
+            return response()->json(['error' => 'No created account'], 500);
 
-            $alpacaRepo->updateAccountToUser($user, $res);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

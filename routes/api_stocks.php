@@ -27,10 +27,11 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'mobile']);
 Route::post('/reset-password', [ResetPasswordController::class, 'mobile']);
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::patch('/profile', [ApiController::class, 'updateProfile']);
+    Route::patch('/profile', [StocksController::class, 'updateAccount']);
     Route::get('/countries', [ApiController::class, 'countries']);
 
-    Route::post('/upload/document', [ApiController::class, 'uploadDocument']);
+    Route::post('/onboard/profile', [ApiController::class, 'onboardProfile']);
+    Route::post('/onboard/document', [ApiController::class, 'onboardDocument']);
     Route::post('/onboard/complete', [StocksController::class, 'createAccount']);
 
     Route::get('account/trading-profile', [StocksController::class, 'getTradingAccount']);

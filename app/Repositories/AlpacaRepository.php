@@ -19,7 +19,7 @@ class AlpacaRepository
             //throw $th;
         }
         $params = [
-            "enabled_assets"=> ["us_equity"],
+            "enabled_assets"=> ["us_equity", "crypto"],
             'contact' => [
                 'email_address' => $user->email,
                 'phone_number' => $user->mobile,
@@ -97,15 +97,38 @@ class AlpacaRepository
     /**
      * @param \App\Models\User $user
      */
-    public function updateAccountToUser($user, $data)
+    public function paramsForUpdateAccount($user)
     {
-        $user->update([
-            'account_id' => $data['id'],
-            'account_number' => $data['account_number'],
-            'account_status' => $data['status'],
-            'account_currency' => $data['currency'],
-            'account_type' => $data['account_type'],
-        ]);
+        $params = [
+            "enabled_assets"=> ["us_equity", "crypto"],
+            'contact' => [
+                'email_address' => $user->email,
+                'phone_number' => $user->mobile,
+                'street_address' => $user->address,
+                'city' => $user->city,
+                'state' => $user->state,
+                'country' => $user->country_code,
+                'postal_code' => $user->postal_code
+            ],
+            'identity' => [
+                'given_name' => $user->first_name,
+                'family_name' => $user->last_name,
+                'funding_source' => explode(",", $user->funding_source)
+            ],
+            'disclosures' => [
+                'is_control_person' => $user->public_shareholder == 1 ? true : false,
+                'is_affiliated_exchange_or_finra' => $user->is_affiliated_exchange_or_finra == 1 ? true : false,
+                'is_politically_exposed' => $user->is_politically_exposed == 1 ? true : false,
+                'immediate_family_exposed' => $user->immediate_family_exposed == 1 ? true : false
+            ],
+            'trusted_contact' => [
+                'given_name' => $user->first_name,
+                'family_name' => $user->last_name,
+                'email_address' => $user->email
+            ]
+        ];
+
+        return $params;
     }
 
     /**

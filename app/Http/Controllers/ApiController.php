@@ -165,7 +165,23 @@ class ApiController extends Controller
         return response()->json($user);
     }
 
-    public function uploadDocument(Request $request)
+    public function onboardProfile(Request $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $data = $request->all();
+        if($request->has('tax_id')) {
+            $country = Country::where('short_code', $user->country_code)->first();
+            $data['tax_id_type'] = isset($country) ? $country->tax_id_type : 'SSN';
+        }
+        $user->update($data);
+
+        return response()->json($user);
+    }
+
+    public function onboardDocument(Request $request)
     {
         /**
          * @var \App\Models\User
