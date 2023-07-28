@@ -11,6 +11,13 @@ class AlpacaRepository
      */
     public function paramsForCreateAccount($user)
     {
+        $doc = '';
+
+        try {
+            $doc = $user->doc == null || $user->doc == '' ? '' : base64_encode(file_get_contents(get_file_link($user->doc)));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         $params = [
             "enabled_assets"=> ["us_equity"],
             'contact' => [
@@ -47,7 +54,7 @@ class AlpacaRepository
                 [
                     "document_type"=> "identity_verification",
                     // "document_sub_type"=> "passport",
-                    "content"=> base64_encode(file_get_contents(get_file_link($user->doc))),
+                    "content"=> $doc,
                     "mime_type"=> "image/jpeg"
                 ]
             ],
